@@ -7,7 +7,8 @@ namespace KeepTheFire.Scenes.Game {
 
 		private new UnityEngine.Camera camera = null;
 
-		private HeadsUpDisplay headsUpDisplay = null;
+		private GameObject pool = null;
+		private Deer[] deers = null;
 
 		private void Awake() {
 
@@ -16,12 +17,17 @@ namespace KeepTheFire.Scenes.Game {
 			camera = transform.Find("Camera").GetComponent<UnityEngine.Camera>();
 			camera.gameObject.AddComponent<Game.Camera>();
 
-			// GameObject hudPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/HeadsUpDisplay");
-			// GameObject hudGO = Instantiate(hudPrefab);
-			// hudGO.transform.position = new Vector3(0.0f, 0.0f, 1000f);
-			// headsUpDisplay = hudGO.AddComponent<HeadsUpDisplay>();
-			
-			
+			pool = new GameObject("Pool");
+			pool.transform.SetParent(transform);
+			pool.transform.localPosition = new Vector3(0, -100, 0);
+			GameObject deerPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/Animals/Deer");
+			deers = new Deer[5];
+
+			for(int i = 0; i < deers.Length; i++) {
+				deers[i] = Instantiate(deerPrefab).AddComponent<Deer>();
+				deers[i].transform.SetParent(pool.transform);
+				deers[i].transform.localPosition = Vector3.zero;
+            }
 		}
 
 		private void Update() {
