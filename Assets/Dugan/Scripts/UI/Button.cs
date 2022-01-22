@@ -106,7 +106,6 @@ namespace Dugan.UI {
 		}
 
 		protected override void OnPointerEnterInternal() {
-			Debug.Log("Pointer hovering!");
 			if (!bInteractive)
 				return;
 
@@ -115,7 +114,6 @@ namespace Dugan.UI {
 		}
 
 		protected override void OnPointerDownInternal() {
-			Debug.Log("Pointer not hovering!");
 			if (!bInteractive)
 				return;
 

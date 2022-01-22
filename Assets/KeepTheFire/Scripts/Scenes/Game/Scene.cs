@@ -20,8 +20,9 @@ namespace KeepTheFire.Scenes.Game {
 			camera = transform.Find("Camera").GetComponent<UnityEngine.Camera>();
 			camera.gameObject.AddComponent<Game.Camera>();
 
-//			headsUpDisplay = Instantiate(Resources.Load<GameObject>("KeepTheFire/Scenes/Game/HeadsUpDisplay")).AddComponent<HeadsUpDisplay>();
-			//headsUpDisplay.transform.position = new Vector3(0.0f, 0.0f, 1000.0f);
+			GameObject hudPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/HeadsUpDisplay");
+			headsUpDisplay = Instantiate(hudPrefab).AddComponent<HeadsUpDisplay>();
+			headsUpDisplay.transform.position = new Vector3(0.0f, 0.0f, 1000.0f);
 
 			playerTorch = transform.Find("Level/Player/Light").GetComponent<Light>();
 
