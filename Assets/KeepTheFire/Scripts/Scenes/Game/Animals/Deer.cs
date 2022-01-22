@@ -7,7 +7,17 @@ namespace KeepTheFire.Scenes.Game
     {
 
         public int state = 0;
-        public float speed = 1.0f;
+        public float speed = 1.7f;
+
+        // starting elevation
+        public float yPos = 3.0f;
+
+        // x,z for starting pos vector
+        public float startX = -10.0f;
+        public float startZ;
+        public float moveZ;
+
+        public float stopX = 10.0f;
 
         // Start is called before the first frame update
         private void Awake()
@@ -19,7 +29,7 @@ namespace KeepTheFire.Scenes.Game
         void Update()
         {
             if(state == 0) {
-                if(Random.Range(0.0f, 1.0f) < 0.0001f) {
+                if(Random.Range(0.0f, 1.0f) < 0.001f) {
                     activate();
                     state++;
                 }
@@ -28,7 +38,7 @@ namespace KeepTheFire.Scenes.Game
                 // do movement
                 movement();
                 // check for ending movement
-                if(transform.position.x >= 10.0f) {
+                if(transform.position.x >= stopX) {
                     deactivate();
                     state = 0;
                 }
@@ -36,17 +46,19 @@ namespace KeepTheFire.Scenes.Game
 
         }
 
-        void activate() { // puts deer on screen
-            // set deer to be on screen
-            transform.position = new Vector3(-10.0f, 3.0f, 1.0f);
+        void activate() { // puts deer in starting position
+            moveZ = Random.Range(-1.0f, 1.0f);
+            startZ = Random.Range(-5.0f, 6.0f);
+            transform.position = new Vector3(startX, yPos, startZ);
         }
 
         void movement() { // moves the deer across screen
             // move distance
-            float step = speed*Time.deltaTime;
+            float stepX = speed*Time.deltaTime;
+            float stepZ = moveZ*Time.deltaTime;
 
             // set position of deer based on step size
-            transform.position = transform.position + new Vector3(step, 0f, 0f);
+            transform.position = transform.position + new Vector3(stepX, 0f, stepZ);
         }
 
         void deactivate() {
