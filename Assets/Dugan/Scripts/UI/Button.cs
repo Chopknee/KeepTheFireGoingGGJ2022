@@ -106,6 +106,7 @@ namespace Dugan.UI {
 		}
 
 		protected override void OnPointerEnterInternal() {
+			Debug.Log("Pointer hovering!");
 			if (!bInteractive)
 				return;
 
@@ -114,6 +115,7 @@ namespace Dugan.UI {
 		}
 
 		protected override void OnPointerDownInternal() {
+			Debug.Log("Pointer not hovering!");
 			if (!bInteractive)
 				return;
 
@@ -206,31 +208,42 @@ namespace Dugan.UI {
 
 			public ButtonPart(UnityEngine.UI.Image image) {
 				this.image = image;
-				Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += OnDarkmodeSettingChanged;
+				
+				#if DUGAN_NATIVE_EXTENSIONS
+					Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += OnDarkmodeSettingChanged;
+				#endif
 				//ApplyColor();
 			}
 
 			public ButtonPart(UnityEngine.UI.RawImage rawImage) {
 				this.rawImage = rawImage;
-				Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += OnDarkmodeSettingChanged;
+				#if DUGAN_NATIVE_EXTENSIONS
+					Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += OnDarkmodeSettingChanged;
+				#endif
 				//ApplyColor();
 			}
 
 			public ButtonPart(UnityEngine.UI.Text text) {
 				this.text = text;
-				Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += OnDarkmodeSettingChanged;
+				#if DUGAN_NATIVE_EXTENSIONS
+					Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += OnDarkmodeSettingChanged;
+				#endif
 				//ApplyColor();
 			}
 
 			public ButtonPart(TMPro.TextMeshProUGUI textMesh) {
 				this.textMesh = textMesh;
-				Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += OnDarkmodeSettingChanged;
+				#if DUGAN_NATIVE_EXTENSIONS
+					Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += OnDarkmodeSettingChanged;
+				#endif
 				//ApplyColor();
 			}
 
 			public ButtonPart(Renderer renderer) {
 				this.renderer = renderer;
-				Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += OnDarkmodeSettingChanged;
+				#if DUGAN_NATIVE_EXTENSIONS
+					Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += OnDarkmodeSettingChanged;
+				#endif
 				//ApplyColor();
 			}
 
@@ -295,7 +308,9 @@ namespace Dugan.UI {
 			}
 
 			~ButtonPart() {
-				Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged -= OnDarkmodeSettingChanged;
+				#if DUGAN_NATIVE_EXTENSIONS
+					Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged -= OnDarkmodeSettingChanged;
+				#endif
 			}
 
 		}

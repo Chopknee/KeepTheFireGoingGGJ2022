@@ -27,13 +27,16 @@ namespace Dugan.UI {
 			uiRawImage = GetComponent<UnityEngine.UI.RawImage>();
 			uiText = GetComponent<UnityEngine.UI.Text>();
 			tmproText = GetComponent<TMPro.TextMeshProUGUI>();
-
-			ApplyMode(Dugan.NativeExtentions.Plugin.IsDarkmodeEnabled());
-			Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += ApplyMode;
+			#if DUGAN_NATIVE_EXTENSIONS
+				ApplyMode(Dugan.NativeExtentions.Plugin.IsDarkmodeEnabled());
+				Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged += ApplyMode;
+			#endif
 		}
 
 		public void ForceApply() {
-			ApplyMode(Dugan.NativeExtentions.Plugin.IsDarkmodeEnabled());
+			#if DUGAN_NATIVE_EXTENSIONS
+				ApplyMode(Dugan.NativeExtentions.Plugin.IsDarkmodeEnabled());
+			#endif
 		}
 
 		private void ApplyMode(bool isDarkmodeEnabled) {
@@ -60,7 +63,9 @@ namespace Dugan.UI {
 		}
 
 		private void OnDestroy() {
-			Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged -= ApplyMode;
+			#if DUGAN_NATIVE_EXTENSIONS
+				Dugan.NativeExtentions.Plugin.onSystemDarkModeChanged -= ApplyMode;
+			#endif
 		}
 	}
 }

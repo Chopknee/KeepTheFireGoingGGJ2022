@@ -38,7 +38,7 @@ namespace Dugan.UI {
 		private float overscrollMovement = 500.0f;
 		private float startVelocity = 0.0f;
 
-		private float overscrollStart = 0.0f;
+		//private float overscrollStart = 0.0f;
 
 		public float totalLength = 0.0f;
 
@@ -55,7 +55,7 @@ namespace Dugan.UI {
 			scrollLocked = false;
 			this.items.Clear();
 			this.items.AddRange(items);
-			//Debug.Log(this.items.Count);
+			Debug.Log(this.items.Count);
 			scrollDirection = direction;
 			this.viewLength = viewLength;
 

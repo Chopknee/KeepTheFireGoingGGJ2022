@@ -7,20 +7,21 @@ namespace KeepTheFire.Scenes.Game {
 
 		private new UnityEngine.Camera camera = null;
 
+		private HeadsUpDisplay headsUpDisplay = null;
+
 		private GameObject pool = null;
 		private Deer[] deers = null;
 
-		// private Transform playerTorch = null;
 		private Light playerTorch = null;
 
 		public Vector3 cursorHoverPosition = Vector3.zero;
 
 		private void Awake() {
-
-			//Bleh
-
 			camera = transform.Find("Camera").GetComponent<UnityEngine.Camera>();
 			camera.gameObject.AddComponent<Game.Camera>();
+
+//			headsUpDisplay = Instantiate(Resources.Load<GameObject>("KeepTheFire/Scenes/Game/HeadsUpDisplay")).AddComponent<HeadsUpDisplay>();
+			//headsUpDisplay.transform.position = new Vector3(0.0f, 0.0f, 1000.0f);
 
 			playerTorch = transform.Find("Level/Player/Light").GetComponent<Light>();
 
