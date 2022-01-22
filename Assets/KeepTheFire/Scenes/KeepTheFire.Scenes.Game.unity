@@ -975,7 +975,7 @@ GameObject:
   - component: {fileID: 298893492}
   - component: {fileID: 298893493}
   m_Layer: 0
-  m_Name: Point Light
+  m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3170,6 +3170,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorHoverPosition: {x: 0, y: 0, z: 0}
+  fireHealth: 0.5
+  logStashe: 0.5
 --- !u!1 &1177603929
 GameObject:
   m_ObjectHideFlags: 0
@@ -14458,7 +14460,7 @@ GameObject:
   - component: {fileID: 1807930294}
   - component: {fileID: 1807930293}
   m_Layer: 0
-  m_Name: w
+  m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
