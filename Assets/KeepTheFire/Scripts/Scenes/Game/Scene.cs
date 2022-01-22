@@ -7,6 +7,7 @@ namespace KeepTheFire.Scenes.Game {
 
 		private new UnityEngine.Camera camera = null;
 
+		private HeadsUpDisplay headsUpDisplay = null;
 
 		private void Awake() {
 
@@ -14,6 +15,11 @@ namespace KeepTheFire.Scenes.Game {
 
 			camera = transform.Find("Camera").GetComponent<UnityEngine.Camera>();
 			camera.gameObject.AddComponent<Game.Camera>();
+
+			// GameObject hudPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/HeadsUpDisplay");
+			// GameObject hudGO = Instantiate(hudPrefab);
+			// hudGO.transform.position = new Vector3(0.0f, 0.0f, 1000f);
+			// headsUpDisplay = hudGO.AddComponent<HeadsUpDisplay>();
 			
 			
 		}
