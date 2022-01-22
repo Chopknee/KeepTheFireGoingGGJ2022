@@ -19,7 +19,7 @@ namespace KeepTheFire.Scenes.Game
         public float startX = -10.0f;
 
         // how far right the deers travel
-        public float bounds = 10.0f;
+        public float bounds = 11.0f;
 
         // starting pos and step size for randomized movement
         public float startZ;
@@ -39,7 +39,7 @@ namespace KeepTheFire.Scenes.Game
         void Update()
         {
             if(state == 0) {
-                if(Random.Range(0.0f, 1.0f) < 0.001f) {
+                if(Random.Range(0.0f, 1.0f) < 0.0005f) {
                     activate();
                     state++;
                 }
@@ -58,6 +58,11 @@ namespace KeepTheFire.Scenes.Game
         private void activate() { // puts deer in starting position
             moveZ = Random.Range(-1.0f, 1.0f);
             startZ = Random.Range(-5.0f, 6.0f);
+            
+            if(Random.Range(-1f, 1f) > 0) {
+                startX = -startX;
+            }
+
             transform.position = new Vector3(startX, elevation, startZ);
         }
 
@@ -65,6 +70,10 @@ namespace KeepTheFire.Scenes.Game
             // move distance
             float stepX = speed*Time.deltaTime;
             float stepZ = moveZ*Time.deltaTime;
+
+            if(startX > 0) {
+                stepX = -stepX;
+            }
 
             // set position of deer based on step size
             transform.position = transform.position + new Vector3(stepX, 0f, stepZ);
@@ -85,6 +94,13 @@ namespace KeepTheFire.Scenes.Game
 
         
         private void OnButtonClicked(Dugan.Input.PointerTarget target, string args) {
+            if(state != 1) {
+                return;
+            }
+
+            // add to log
+            Scene.instance.logStashe += 0.1f;
+
             moveZ = -moveZ;
             if(moveZ < 0) {
                 moveZ = moveZ - Random.Range(1.0f, 3.0f);
