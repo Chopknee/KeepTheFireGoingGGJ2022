@@ -9,7 +9,8 @@ namespace KeepTheFire.Scenes.Game
         private Dugan.UI.Button button = null;
 
         public int state = 0;
-        public float speed = 1.7f;
+        public float walkSpeed = 1.7f;
+        public float startleSpeed = 2.7f;
 
         // starting elevation
         public float elevation = 3.0f;
@@ -18,7 +19,7 @@ namespace KeepTheFire.Scenes.Game
         public float startX = -10.0f;
 
         // how far right the deers travel
-        public float stopX = 10.0f;
+        public float bounds = 10.0f;
 
         // starting pos and step size for randomized movement
         public float startZ;
@@ -45,22 +46,22 @@ namespace KeepTheFire.Scenes.Game
             }
             else if(state == 1) {
                 // do movement
-                movement();
-                // check for finished cycle
-                if(transform.position.x >= stopX) {
-                    deactivate();
-                    state = 0;
-                }
+                movement(walkSpeed);
+                checkStopCycle();
+            }
+            else if(state == 2) {
+                movement(-startleSpeed);
+                checkStopCycle();
             }
         }
 
-        void activate() { // puts deer in starting position
+        private void activate() { // puts deer in starting position
             moveZ = Random.Range(-1.0f, 1.0f);
             startZ = Random.Range(-5.0f, 6.0f);
             transform.position = new Vector3(startX, elevation, startZ);
         }
 
-        private void movement() { // moves the deer across screen
+        private void movement(float speed) { // moves the deer across screen
             // move distance
             float stepX = speed*Time.deltaTime;
             float stepZ = moveZ*Time.deltaTime;
@@ -74,8 +75,24 @@ namespace KeepTheFire.Scenes.Game
             transform.position = homePos;
         }
 
+        private void checkStopCycle() {
+             // check for finished cycle
+            if(Mathf.Abs(transform.position.x) >= bounds) {
+                deactivate();
+                state = 0;
+            }
+        }
+
+        
         private void OnButtonClicked(Dugan.Input.PointerTarget target, string args) {
-            Debug.Log("Button Clicked!");
+            moveZ = -moveZ;
+            if(moveZ < 0) {
+                moveZ = moveZ - Random.Range(1.0f, 3.0f);
+            }
+            else {
+                moveZ = moveZ + Random.Range(1.0f, 3.0f);
+            }
+            state = 2;
         }
     }
 }
