@@ -11,11 +11,12 @@ namespace KeepTheFire.Scenes.Game {
 
 		public FirePit firePit { get; internal set; }
 
-		private Logs logs = null;
+		public Logs logs {get; internal set; }
 
 		private GameObject pool = null;
 		private Deer[] deers = null;
 		private Squirrel[] squirrels = null;
+		private Wolf[] wolfs = null;
 
 		private Light playerTorch = null;
 
@@ -68,6 +69,12 @@ namespace KeepTheFire.Scenes.Game {
 				squirrels[i].transform.SetParent(pool.transform);
 				squirrels[i].transform.localPosition = Vector3.zero;
 			}
+
+			GameObject wolfPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/Animals/Wolf");
+			wolfs = new Wolf[1];
+			wolfs[0] = Instantiate(wolfPrefab).AddComponent<Wolf>();
+			wolfs[0].transform.SetParent(pool.transform);
+			wolfs[0].transform.localPosition = Vector3.zero;
 		}
 
 		private void Update() {

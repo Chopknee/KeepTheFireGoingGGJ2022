@@ -31,23 +31,23 @@ namespace KeepTheFire.Scenes.Game
         {
             if(state == 0) {
                 if(Random.Range(0.0f, 1.0f) < 0.0005f) {
-                    activate();
+                    Activate();
                     state++;
                 }
             }
             else if(state == 1) {
-                // do movement
-                movement(Random.Range(0.8f, 2f));
-                checkStopCycle();
+                // do Movement
+                Movement(Random.Range(0.8f, 2f));
+                CheckStopCycle();
             }
             else if(state == 2) {
                 offsetZ = Random.Range(0.15f, 0.05f);
-                movement(Random.Range(2.7f, 3.0f));
-                checkStopCycle();
+                Movement(Random.Range(2.7f, 3.0f));
+                CheckStopCycle();
             }
         }
 
-        private void activate() { // puts deer in starting position
+        private void Activate() { // puts deer in starting position
             startOffsetZ = Random.Range(4f, 5f);
             if(Random.Range(-1f,1f) < 0) {
                 startOffsetX = -startOffsetX;
@@ -65,7 +65,7 @@ namespace KeepTheFire.Scenes.Game
             offsetZ = Random.Range(-0.006f, 0.006f);
         }
 
-        private void movement(float speed) { // moves the deer across screen
+        private void Movement(float speed) { // moves the deer across screen
             if(startOffsetX < 0) {
                 xPos = transform.position.x + speed*Time.deltaTime;
             }
@@ -76,14 +76,14 @@ namespace KeepTheFire.Scenes.Game
             transform.position = new Vector3(xPos, elevation, startOffsetZ);   
         }
 
-        private void deactivate() {
+        private void Deactivate() {
             transform.position = new Vector3(0.0f, -90.0f, 0.0f);
             transform.Find("Wood_Whole").gameObject.SetActive(true);
         }
 
-        private void checkStopCycle() {
+        private void CheckStopCycle() {
             if(Mathf.Abs(transform.position.x) >= bounds || Mathf.Abs(transform.position.z) >= bounds) {
-                deactivate();
+                Deactivate();
                 state = 0;
             }
         }
