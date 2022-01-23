@@ -5,15 +5,11 @@ namespace KeepTheFire.Scenes.Game
 {
     public class Deer : MonoBehaviour
     {
-
         private Dugan.UI.Button button = null;
 
         public int state = 0;
 
-        // starting elevation
-        public float elevation = 3.0f;
-
-        // how far left the deers start
+        public float elevation = 2.0f;
         public float startOffsetX = -16.0f;
         public float startOffsetZ = 0f;
         public float offsetZ = 0f;
@@ -21,8 +17,6 @@ namespace KeepTheFire.Scenes.Game
 
         public float xPos;
         float faceForward;
-
-        private Vector3 homePos = new Vector3(0.0f, -90.0f, 0.0f);
 
         // Start is called before the first frame update
         private void Awake()
@@ -36,76 +30,80 @@ namespace KeepTheFire.Scenes.Game
         void Update()
         {
             if(state == 0) {
-                if(Random.Range(0.0f, 1.0f) < 0.005f) {
+                if(Random.Range(0.0f, 1.0f) < 0.0005f) {
                     activate();
                     state++;
                 }
             }
             else if(state == 1) {
                 // do movement
-                movement(1.7f);
+                movement(Random.Range(0.8f, 2f));
                 checkStopCycle();
             }
             else if(state == 2) {
-                movement(-2.7f);
+                offsetZ = Random.Range(0.15f, 0.05f);
+                movement(Random.Range(2.7f, 3.0f));
                 checkStopCycle();
             }
         }
 
         private void activate() { // puts deer in starting position
-            startOffsetZ = Random.Range(3.5f, 4.5f);
+            startOffsetZ = Random.Range(4f, 5f);
             if(Random.Range(-1f,1f) < 0) {
                 startOffsetX = -startOffsetX;
             }
+
+            if(startOffsetX < 0) {
+                transform.forward = new Vector3(90f, 0f, 0f);
+            }
+            else {
+                transform.forward = new Vector3(-90f, 0f, 0f);
+            }
+
             transform.position = new Vector3(startOffsetX, elevation, startOffsetZ);
-            offsetZ = Random.Range(-0.008f, 0.008f);
+            
+            offsetZ = Random.Range(-0.006f, 0.006f);
         }
 
         private void movement(float speed) { // moves the deer across screen
             if(startOffsetX < 0) {
                 xPos = transform.position.x + speed*Time.deltaTime;
-                transform.forward = new Vector3(speed, 0f, offsetZ);
             }
             else {
                 xPos = transform.position.x - speed*Time.deltaTime;
-                transform.forward = new Vector3(-speed, 0f, offsetZ);
             }
-            
             startOffsetZ += offsetZ;
-            transform.position = new Vector3(xPos, elevation, startOffsetZ);
-            
+            transform.position = new Vector3(xPos, elevation, startOffsetZ);   
         }
 
         private void deactivate() {
-            // set deer to off screen position
-            transform.position = homePos;
+            transform.position = new Vector3(0.0f, -90.0f, 0.0f);
+            transform.Find("Wood_Whole").gameObject.SetActive(true);
         }
 
         private void checkStopCycle() {
-             // check for finished cycle
-            if(Mathf.Abs(transform.position.x) >= bounds) {
+            if(Mathf.Abs(transform.position.x) >= bounds || Mathf.Abs(transform.position.z) >= bounds) {
                 deactivate();
                 state = 0;
             }
         }
 
         private void OnButtonClicked(Dugan.Input.PointerTarget target, string args) {
-            // check if already flipped
             if(state != 1) {
                 return;
             }
-            // add to log pile
-            Scene.instance.logStashe += 0.1f;
+            transform.forward = new Vector3(0f, 0f, 0f);
 
             // Adjust for stupid offset when rotating
             if(startOffsetX < 0) {
-                transform.position = transform.position - new Vector3(6f, 0f, 0f);
+                transform.position = transform.position - new Vector3(4f, 0f, 0f);
             }
             else {
-                transform.position = transform.position + new Vector3(6f, 0f, 0f);
+                transform.position = transform.position + new Vector3(4f, 0f, 0f);
             }
 
-            // move to state 2
+            transform.Find("Wood_Whole").gameObject.SetActive(false);
+            Scene.instance.logStashe += 0.1f;
             state = 2;
         }
     }
