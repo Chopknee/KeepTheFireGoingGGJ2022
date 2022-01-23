@@ -5,6 +5,8 @@ using UnityEngine;
 namespace KeepTheFire.Scenes.Game {
 	public class Squirrel : MonoBehaviour {
 
+		private AudioSource source = null;
+
 		private int state = 0;
 
 		private GameObject particles = null;
@@ -29,6 +31,8 @@ namespace KeepTheFire.Scenes.Game {
 
 			button = gameObject.AddComponent<Dugan.UI.Button>();
 			button.OnClicked += OnClickButton;
+
+			source = GetComponent<AudioSource>();
 
 		}
 
@@ -82,6 +86,8 @@ namespace KeepTheFire.Scenes.Game {
 			Vector3 forward = centerPoint - transform.position;
 			forward.y = 0.0f;
 			transform.forward = forward.normalized;
+
+			source.Play();
 		}
 
 		private void DeActivate() {
@@ -90,6 +96,8 @@ namespace KeepTheFire.Scenes.Game {
 			light.SetActive(false);
 			particles.SetActive(false);
 			log.SetActive(false);
+
+			source.Stop();
 		}
 
 		private void OnClickButton(Dugan.Input.PointerTarget target, string args) {

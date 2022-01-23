@@ -6,6 +6,8 @@ namespace KeepTheFire.Scenes.Game {
     public class Wolf : MonoBehaviour
     {
 
+        private AudioSource source = null;
+
         private int state = 0;
 
         private float logPileRadius = 0.8f;
@@ -17,6 +19,7 @@ namespace KeepTheFire.Scenes.Game {
         void Awake() {
             button = gameObject.AddComponent<Dugan.UI.Button>();
             button.OnClicked += OnClickButton;
+            source = GetComponent<AudioSource>();
         }
 
         // Update is called once per frame
@@ -58,11 +61,14 @@ namespace KeepTheFire.Scenes.Game {
             forward.y = 0.0f;
             transform.forward = forward.normalized;
             transform.Find("Wood_Whole").gameObject.SetActive(false);
+
+            source.Play();
         }
 
         void Deactivate() {
             state = 0;
             transform.localPosition = Vector3.zero;
+            source.Stop();
         }
 
         void OnClickButton(Dugan.Input.PointerTarget target, string args) {

@@ -5,6 +5,9 @@ namespace KeepTheFire.Scenes.Game
 {
     public class Deer : MonoBehaviour
     {
+
+        private AudioSource source = null;
+
         private Dugan.UI.Button button = null;
 
         public int state = 0;
@@ -24,6 +27,7 @@ namespace KeepTheFire.Scenes.Game
             // gameObject.SetActive(false);
             button = gameObject.AddComponent<Dugan.UI.Button>();
             button.OnClicked += OnButtonClicked;
+            source = GetComponent<AudioSource>();
         }
 
         // Update is called once per frame
@@ -63,6 +67,7 @@ namespace KeepTheFire.Scenes.Game
             transform.position = new Vector3(startOffsetX, elevation, startOffsetZ);
             
             offsetZ = Random.Range(-0.006f, 0.006f);
+            source.Play();
         }
 
         private void Movement(float speed) { // moves the deer across screen
@@ -79,6 +84,7 @@ namespace KeepTheFire.Scenes.Game
         private void Deactivate() {
             transform.position = new Vector3(0.0f, -90.0f, 0.0f);
             transform.Find("Wood_Whole").gameObject.SetActive(true);
+            source.Stop();
         }
 
         private void CheckStopCycle() {
