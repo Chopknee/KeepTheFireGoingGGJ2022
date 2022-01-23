@@ -48,7 +48,7 @@ namespace KeepTheFire.Scenes.Game {
 
 			introCG = canvas.Find("Intro").GetComponent<CanvasGroup>();
 
-			txtTime = canvas.Find("TxtTime").GetComponent<TMPro.TextMeshProUGUI>();
+			txtTime = canvas.Find("Watch/TxtTime").GetComponent<TMPro.TextMeshProUGUI>();
 
 			// fadeAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
 			// fadeAnimation.SetLengthInSeconds(1.0f);

@@ -68,9 +68,9 @@ Material:
     - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 1
-    - _ScaleRatioB: 1
-    - _ScaleRatioC: 1
+    - _ScaleRatioA: 0.8333333
+    - _ScaleRatioB: 0.6770833
+    - _ScaleRatioC: 0.6770833
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -162,9 +162,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Candara SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: -2001613429
   material: {fileID: -5130219169432524541}
-  materialHashCode: 0
+  materialHashCode: -1608972213
   m_Version: 1.1.0
   m_SourceFontFileGUID: e9518f8ed3f507c4fb5fa3f32f6d1a1a
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: e9518f8ed3f507c4fb5fa3f32f6d1a1a, type: 3}
@@ -192,6 +192,20 @@ MonoBehaviour:
     m_StrikethroughThickness: 1.8066406
     m_TabWidth: 40
   m_GlyphTable:
+  - m_Index: 3
+    m_Metrics:
+      m_Width: 0
+      m_Height: 0
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 0
+      m_HorizontalAdvance: 40.109375
+    m_GlyphRect:
+      m_X: 0
+      m_Y: 0
+      m_Width: 0
+      m_Height: 0
+    m_Scale: 1
+    m_AtlasIndex: 0
   - m_Index: 4
     m_Metrics:
       m_Width: 112
@@ -1412,6 +1426,10 @@ MonoBehaviour:
     m_AtlasIndex: 0
   m_CharacterTable:
   - m_ElementType: 1
+    m_Unicode: 32
+    m_GlyphIndex: 3
+    m_Scale: 1
+  - m_ElementType: 1
     m_Unicode: 33
     m_GlyphIndex: 488
     m_Scale: 1
@@ -2458,8 +2476,8 @@ MonoBehaviour:
     atlasWidth: 1024
     atlasHeight: 1024
     characterSetSelectionMode: 8
-    characterSequence: "a\r\nb\r\nc\r\nd\r\ne\r\nf\r\ng\r\nh\r\ni\r\nj\r\nk\r\nl\r\nm\r\nn\r\no\r\np\r\nq\r\nr\r\ns\r\nt\r\nu\r\nv\r\nw\r\nx\r\ny\r\nz\r\nA\r\nB\r\nC\r\nD\r\nE\r\nF\r\nG\r\nH\r\nI\r\nJ\r\nK\r\nL\r\nM\r\nN\r\nO\r\nP\r\nQ\r\nR\r\nS\r\nT\r\nU\r\nV\r\nW\r\nX\r\nY\r\nZ\r\n1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n0\r\n-\r\n=\r\n+\r\n`\r\n~\r\n'\r\n\"\r\n;\r\n:\r\n?\r\n.\r\n(\r\n)\r\n{\r\n}\r\n[\r\n]\r\n!\r\n@\r\n#\r\n$\r\n%\r\n^\r\n&\r\n*\r\n\uFFFD"
-    referencedFontAssetGUID: c370299406a8e5f41b3b44a7b64cd46a
+    characterSequence: "a\r\nb\r\nc\r\nd\r\ne\r\nf\r\ng\r\nh\r\ni\r\nj\r\nk\r\nl\r\nm\r\nn\r\no\r\np\r\nq\r\nr\r\ns\r\nt\r\nu\r\nv\r\nw\r\nx\r\ny\r\nz\r\nA\r\nB\r\nC\r\nD\r\nE\r\nF\r\nG\r\nH\r\nI\r\nJ\r\nK\r\nL\r\nM\r\nN\r\nO\r\nP\r\nQ\r\nR\r\nS\r\nT\r\nU\r\nV\r\nW\r\nX\r\nY\r\nZ\r\n1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7\r\n8\r\n9\r\n0\r\n-\r\n=\r\n+\r\n`\r\n~\r\n'\r\n\"\r\n;\r\n:\r\n?\r\n.\r\n(\r\n)\r\n{\r\n}\r\n[\r\n]\r\n!\r\n@\r\n#\r\n$\r\n%\r\n^\r\n&\r\n*\r\n\uFFFD\r\n "
+    referencedFontAssetGUID: 438c99b9a68546f4194d2a4025a614fa
     referencedTextAssetGUID: def1e93b393a47f4780e335b6cb83fbd
     fontStyle: 0
     fontStyleModifier: 0
