@@ -43,7 +43,7 @@ namespace KeepTheFire.Scenes.Game {
 			pool = new GameObject("Pool");
 			pool.transform.SetParent(transform);
 			pool.transform.localPosition = new Vector3(0, -100, 0);
-			GameObject deerPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/Animals/Deer");
+			GameObject deerPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/Animals/Deer_Buck");
 			deers = new Deer[5];
 
 			for(int i = 0; i < deers.Length; i++) {
