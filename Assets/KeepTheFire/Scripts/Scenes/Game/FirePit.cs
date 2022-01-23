@@ -10,12 +10,16 @@ namespace KeepTheFire.Scenes.Game {
         private ParticleSystem.MainModule particlesMainModule;
         private ParticleSystem.EmissionModule emissionModule;
 
+        private ParticleSystem sparksParticles = null;
+
         private void Awake() {
 
             light = transform.Find("Light").GetComponent<Light>();
             particles = transform.Find("Particles").GetComponent<ParticleSystem>();
             particlesMainModule = particles.main;
             emissionModule = particles.emission;
+
+            sparksParticles = transform.Find("Particles/Sparks").GetComponent<ParticleSystem>();
 
         }
 
@@ -25,6 +29,10 @@ namespace KeepTheFire.Scenes.Game {
             light.intensity = Mathf.Lerp(0, 6, Scene.instance.fireHealth);
             //light.color = Color.Lerp()
             //particlesMainModule
+		}
+
+        public void BurstSparks() {
+            sparksParticles.Play();
 		}
     }
 }

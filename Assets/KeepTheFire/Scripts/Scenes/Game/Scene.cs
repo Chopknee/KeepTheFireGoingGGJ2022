@@ -9,21 +9,19 @@ namespace KeepTheFire.Scenes.Game {
 
 		private HeadsUpDisplay headsUpDisplay = null;
 
-		private FirePit firePit = null;
+		public FirePit firePit { get; internal set; }
+
+		private Logs logs = null;
 
 		private GameObject pool = null;
 		private Deer[] deers = null;
 
 		private Light playerTorch = null;
 
-		public Vector3 cursorHoverPosition = Vector3.zero;
-
 		public static Scene instance = null;
-
 		
 		public float fireHealth = 0.5f;
 
-		[HideInInspector]
 		public float logStashe = 0.5f;
 
 		private void Awake() {
@@ -36,9 +34,13 @@ namespace KeepTheFire.Scenes.Game {
 			headsUpDisplay = Instantiate(hudPrefab).AddComponent<HeadsUpDisplay>();
 			headsUpDisplay.transform.position = new Vector3(0.0f, 0.0f, 1000.0f);
 
-			playerTorch = transform.Find("Level/Player/Light").GetComponent<Light>();
+			Transform level = transform.Find("Level");
 
-			firePit = transform.Find("Level/FirePit").gameObject.AddComponent<FirePit>();
+			playerTorch = level.Find("Player/Light").GetComponent<Light>();
+
+			firePit = level.Find("FirePit").gameObject.AddComponent<FirePit>();
+
+			logs = level.Find("Logs").gameObject.AddComponent<Logs>();
 
 			pool = new GameObject("Pool");
 			pool.transform.SetParent(transform);
@@ -54,31 +56,27 @@ namespace KeepTheFire.Scenes.Game {
 		}
 
 		private void Update() {
-			//Debug.Log(Input.mousePosition);
-			//cursorHoverPosition = 
-			//cursorScreenPosition = cursorHoverPosition;
+			
+			//Move player torch
 			Ray ray = camera.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.5f));
-			Debug.DrawRay(cursorHoverPosition, camera.transform.forward);
 			if (Physics.Raycast(ray, out RaycastHit hit, camera.farClipPlane)) {
-				cursorHoverPosition = hit.point;
 				playerTorch.transform.forward = hit.point - playerTorch.transform.position;
 			}
 
+			//Update fire health over time
 			if (fireHealth > 0.0f) {
-				//Update fire health over time
+				
 				float fireDecay = 0.01f * Time.deltaTime;//Loose 1% of total health per second (100 seconds til death)
 				fireDecay *= -1;
 				fireHealth += fireDecay;
 			}
 
-			if (fireHealth <= 0.0f) {
-				//Game over!
-			}
-		}
+			fireHealth = Mathf.Min(Mathf.Max(fireHealth, 0.0f), 1.0f);
 
-		private void OnDrawGizmos() {
-			Gizmos.color = Color.red;
-			Gizmos.DrawCube(cursorHoverPosition, Vector3.one * 0.25f);
+			//Check for game over
+			if (fireHealth <= 0.0f) {
+				
+			}
 		}
 	}
 }
