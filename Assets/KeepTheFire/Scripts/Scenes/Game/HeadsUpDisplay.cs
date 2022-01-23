@@ -12,6 +12,7 @@ namespace KeepTheFire.Scenes.Game {
 
 		private Dugan.UI.Button btnMenu = null;
 
+		private UnityEngine.UI.Image imgFade = null;
 
 		private void Awake() {
 			camera = transform.Find("Camera").GetComponent<UnityEngine.Camera>();

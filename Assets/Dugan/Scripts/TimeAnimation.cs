@@ -118,9 +118,10 @@ namespace Dugan {
 				if (OnAnimationUpdate != null)
 					OnAnimationUpdate(alpha);
 
-				if (bComplete && OnAnimationComplete != null) {
+				if (bComplete) {
 					bPlaying = false;
-					OnAnimationComplete();
+					if (OnAnimationComplete != null)
+						OnAnimationComplete();
 				}
 
 			}

@@ -42,6 +42,12 @@ namespace KeepTheFire.Scenes.Game {
 
 			logs = level.Find("Logs").gameObject.AddComponent<Logs>();
 
+			Transform allEyes = level.Find("AllEyes");
+
+			for (int i = 0; i < allEyes.childCount; i++) {
+				allEyes.GetChild(i).gameObject.AddComponent<Eyes>();
+			}
+
 			pool = new GameObject("Pool");
 			pool.transform.SetParent(transform);
 			pool.transform.localPosition = new Vector3(0, -100, 0);
