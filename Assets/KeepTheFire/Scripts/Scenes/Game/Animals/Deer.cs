@@ -33,13 +33,15 @@ namespace KeepTheFire.Scenes.Game
             // gameObject.SetActive(false);
             button = gameObject.AddComponent<Dugan.UI.Button>();
             button.OnClicked += OnButtonClicked;
+
+            //transform.Rotate(0, 90, 0);
         }
 
         // Update is called once per frame
         void Update()
         {
             if(state == 0) {
-                if(Random.Range(0.0f, 1.0f) < 0.0005f) {
+                if(Random.Range(0.0f, 1.0f) < 0.005f) {
                     activate();
                     state++;
                 }
@@ -61,6 +63,8 @@ namespace KeepTheFire.Scenes.Game
             
             if(Random.Range(-1f, 1f) > 0) {
                 startX = -startX;
+                // adjust rotation of deer
+                //transform.Rotate(0, -180, 0);
             }
 
             transform.position = new Vector3(startX, elevation, startZ);
@@ -77,6 +81,7 @@ namespace KeepTheFire.Scenes.Game
 
             // set position of deer based on step size
             transform.position = transform.position + new Vector3(stepX, 0f, stepZ);
+            transform.forward = new Vector3(stepX, 0f, stepZ).normalized;
         }
 
         private void deactivate() {
@@ -94,20 +99,26 @@ namespace KeepTheFire.Scenes.Game
 
         
         private void OnButtonClicked(Dugan.Input.PointerTarget target, string args) {
+            Debug.Log("Deer Clicked!");
             if(state != 1) {
                 return;
             }
+            
+            // Rotate deer
+            //transform.Rotate(0, 180, 0);
 
             // add to log
             Scene.instance.logStashe += 0.1f;
 
             moveZ = -moveZ;
+            
             if(moveZ < 0) {
                 moveZ = moveZ - Random.Range(1.0f, 3.0f);
             }
             else {
                 moveZ = moveZ + Random.Range(1.0f, 3.0f);
             }
+            
             state = 2;
         }
     }
