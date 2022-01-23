@@ -23,12 +23,10 @@ namespace KeepTheFire.Scenes.Game {
 			canvas = transform.Find("Canvas") as RectTransform;
 
 			btnCredits = canvas.Find("BtnCredits").gameObject.AddComponent<Dugan.UI.Button>();
-			btnCredits.OnClicked += OnClickCreditsWindow;
-			btnCredits.gameObject.SetActive(false);
+			btnCredits.OnClicked += OnClickBtnCredits;
 
 			btnQuit = canvas.Find("BtnQuit").gameObject.AddComponent<Dugan.UI.Button>();
-			btnQuit.OnClicked += OnClickCreditsWindow;
-			btnQuit.gameObject.SetActive(false);
+			btnQuit.OnClicked += OnClickBtnQuit;
 
 			btnCreditsWindow = canvas.Find("Credits").gameObject.AddComponent<Dugan.UI.Button>();
 			btnCreditsWindow.OnClicked += OnClickCreditsWindow;
@@ -43,16 +41,16 @@ namespace KeepTheFire.Scenes.Game {
 			Dugan.Screen.OnResize += OnResize;
 		}
 
-		private void OnClickBtnCredits(Dugan.Input.PointerTarget pointerTarget, string ars) {
+		private void OnClickBtnCredits(Dugan.Input.PointerTarget pointerTarget, string args) {
 			btnCreditsWindow.gameObject.SetActive(true);
 		}
 
-		private void OnClickCreditsWindow(Dugan.Input.PointerTarget pointerTarget, string ars) {
+		private void OnClickCreditsWindow(Dugan.Input.PointerTarget pointerTarget, string args) {
 			btnCreditsWindow.gameObject.SetActive(false);
 		}
 
-		private void OnClickBtnQuit(Dugan.Input.PointerTarget pointerTarget, string ars) {
-
+		private void OnClickBtnQuit(Dugan.Input.PointerTarget pointerTarget, string args) {
+			Application.Quit();
 		}
 
 		private void OnAnimationUpdate(float a) {

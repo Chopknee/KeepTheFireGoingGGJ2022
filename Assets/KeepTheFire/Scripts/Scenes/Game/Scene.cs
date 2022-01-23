@@ -58,7 +58,7 @@ namespace KeepTheFire.Scenes.Game {
 
 			GameObject menuPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/Menu");
 			menu = Instantiate(menuPrefab).AddComponent<Menu>();
-			menu.transform.position = new Vector3(0.0f, 0.0f, 1000.0f);
+			menu.transform.position = new Vector3(0.0f, 0.0f, 4000.0f);
 
 			Transform level = transform.Find("Level");
 
@@ -118,7 +118,7 @@ namespace KeepTheFire.Scenes.Game {
 		private void Update() {
 			if (menu.GetDirection() > 0)
 				return;
-				
+
 			//Is raining or not.
 			float chanceOfRain = (Dugan.Mathf.Simplex.Noise(gameTime / 50.0f, rainMapY) + 1) * 0.5f;
 			bIsRaining = chanceOfRain > 0.5f;

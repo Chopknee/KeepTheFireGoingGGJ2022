@@ -39,6 +39,9 @@ namespace KeepTheFire.Scenes.Game {
 		float a = 0;
 
 		private void Update() {
+			if (Scene.instance.menu.GetDirection() > 0)
+				return;
+				
 			if (state == 0) {
 				//Idle not spawned, checking for chance to spawn
 				if (Random.Range(0.0f, 1.0f) < 0.01f) {

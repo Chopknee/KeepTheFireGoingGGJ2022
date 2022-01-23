@@ -75,6 +75,7 @@ namespace Dugan.Input {
                     if (Physics.Raycast(cam.ScreenPointToRay(pointer.position), out RaycastHit hit, cam.farClipPlane, cam.cullingMask)) {
 						hits.Add(hit.point);
                         //The initial hit
+						//Debug.Log("Hit collider " + hit.collider.name);
 						if (pointer.pointerTarget == null) {//If the old pointer target is null, assign the current hit.
 							pointer.pointerTarget = hit.transform.GetComponent<PointerTarget>();
 							if (pointer.pointerTarget != null)
