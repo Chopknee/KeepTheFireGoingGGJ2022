@@ -92,14 +92,14 @@ namespace KeepTheFire.Scenes.Game
             if(state != 1) {
                 return;
             }
-            transform.forward = new Vector3(0f, 0f, 0f);
+            transform.forward = new Vector3(0f, 0f, 90f);
 
             // Adjust for stupid offset when rotating
             if(startOffsetX < 0) {
-                transform.position = transform.position - new Vector3(4f, 0f, 0f);
+                transform.position = transform.position - new Vector3(3f, 0f, 0f);
             }
             else {
-                transform.position = transform.position + new Vector3(4f, 0f, 0f);
+                transform.position = transform.position + new Vector3(3f, 0f, 0f);
             }
 
             transform.Find("Wood_Whole").gameObject.SetActive(false);
