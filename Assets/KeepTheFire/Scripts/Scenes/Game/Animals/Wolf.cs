@@ -36,6 +36,7 @@ namespace KeepTheFire.Scenes.Game {
                     transform.forward = -transform.forward;
                     // Remove Log from pile
                     Scene.instance.logStashe -= 0.01f;
+                    transform.Find("Wood_Whole").gameObject.SetActive(true);
                 }
             }
 
@@ -56,6 +57,7 @@ namespace KeepTheFire.Scenes.Game {
             Vector3 forward = centerPoint - transform.position;
             forward.y = 0.0f;
             transform.forward = forward.normalized;
+            transform.Find("Wood_Whole").gameObject.SetActive(false);
         }
 
         void Deactivate() {
