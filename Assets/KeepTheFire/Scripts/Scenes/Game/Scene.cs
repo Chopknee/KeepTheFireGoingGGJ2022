@@ -55,8 +55,10 @@ namespace KeepTheFire.Scenes.Game {
 
 		private void Update() {
 			//Debug.Log(Input.mousePosition);
-			cursorHoverPosition = camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.0f));
-			Ray ray = new Ray(cursorHoverPosition, camera.transform.forward);
+			//cursorHoverPosition = 
+			//cursorScreenPosition = cursorHoverPosition;
+			Ray ray = camera.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.5f));
+			Debug.DrawRay(cursorHoverPosition, camera.transform.forward);
 			if (Physics.Raycast(ray, out RaycastHit hit, camera.farClipPlane)) {
 				cursorHoverPosition = hit.point;
 				playerTorch.transform.forward = hit.point - playerTorch.transform.position;
