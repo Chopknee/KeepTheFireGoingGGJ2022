@@ -9,6 +9,7 @@ namespace KeepTheFire.Scenes.Game {
 
 		private GameObject particles = null;
 		private new GameObject light = null;
+		private GameObject log = null;
 
 		private float fireRadius = 1.0f;
 
@@ -22,6 +23,9 @@ namespace KeepTheFire.Scenes.Game {
 			light.SetActive(false);
 			particles = transform.Find("Particles").gameObject;
 			particles.SetActive(false);
+
+			log = transform.Find("Wood_Quarter").gameObject;
+			log.SetActive(false);
 
 			button = gameObject.AddComponent<Dugan.UI.Button>();
 			button.OnClicked += OnClickButton;
@@ -48,6 +52,7 @@ namespace KeepTheFire.Scenes.Game {
 					transform.forward = -transform.forward;
 					light.SetActive(true);
 					particles.SetActive(true);
+					log.SetActive(true);
 					//Remove some fire health
 					Scene.instance.fireHealth += -0.05f;
 				}
@@ -84,6 +89,7 @@ namespace KeepTheFire.Scenes.Game {
 			transform.localPosition = Vector3.zero;
 			light.SetActive(false);
 			particles.SetActive(false);
+			log.SetActive(false);
 		}
 
 		private void OnClickButton(Dugan.Input.PointerTarget target, string args) {

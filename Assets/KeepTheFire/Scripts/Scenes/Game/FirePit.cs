@@ -12,6 +12,8 @@ namespace KeepTheFire.Scenes.Game {
 
         private ParticleSystem sparksParticles = null;
 
+        public GameObject umbrella = null;
+
         private void Awake() {
 
             light = transform.Find("Light").GetComponent<Light>();
@@ -20,6 +22,8 @@ namespace KeepTheFire.Scenes.Game {
             emissionModule = particles.emission;
 
             sparksParticles = transform.Find("Particles/Sparks").GetComponent<ParticleSystem>();
+
+            umbrella = transform.Find("Umbrella").gameObject;
 
         }
 

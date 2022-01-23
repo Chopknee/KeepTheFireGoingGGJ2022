@@ -15,7 +15,19 @@ namespace KeepTheFire.Scenes.Game {
 		private UnityEngine.UI.Image imgFade = null;
 		private Color imgFadeColor = Color.black;
 
+		private CanvasGroup introCG = null;
+
+		private TMPro.TextMeshProUGUI txtTime = null;
+		private int[] times = { 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7};
+
+		private string strFormat = "D2";
+		private string strColon = ":";
+		private string strSpace = " ";
+		private string strAM = " AM";
+		private string strPM = " PM";
+
 		private Dugan.TimeAnimation fadeAnimation = null;
+		private Dugan.TimeAnimation introAnimation = null;
 
 		private void Awake() {
 			camera = transform.Find("Camera").GetComponent<UnityEngine.Camera>();
@@ -31,12 +43,24 @@ namespace KeepTheFire.Scenes.Game {
 
 			imgFade = canvas.Find("ImgFade").GetComponent<UnityEngine.UI.Image>();
 			imgFadeColor = imgFade.color;
+			imgFadeColor.a = 0;
+			imgFade.color = imgFadeColor;
 
-			fadeAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
-			fadeAnimation.SetLengthInSeconds(1.0f);
-			fadeAnimation.OnAnimationUpdate += OnFadeAnimationUpdate;
-			fadeAnimation.SetDirection(1, true);
-			fadeAnimation.SetDirection(-1);
+			introCG = canvas.Find("Intro").GetComponent<CanvasGroup>();
+
+			txtTime = canvas.Find("TxtTime").GetComponent<TMPro.TextMeshProUGUI>();
+
+			// fadeAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
+			// fadeAnimation.SetLengthInSeconds(1.0f);
+			// fadeAnimation.OnAnimationUpdate += OnFadeAnimationUpdate;
+			// fadeAnimation.SetDirection(1, true);
+			// fadeAnimation.SetDirection(-1);
+
+			introAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
+			introAnimation.SetLengthInSeconds(5.0f);
+			introAnimation.OnAnimationUpdate += OnIntroAnimationUpdate;
+			introAnimation.SetDirection(1, true);
+			introAnimation.SetDirection(-1);
 		}
 
 
@@ -54,6 +78,23 @@ namespace KeepTheFire.Scenes.Game {
 			col.a = Mathf.Lerp(0.0f, 0.30f, a);
 
 			imgVingette.color = col;
+
+			//5 *60 = 300 seconds duration
+			//float timeRemaining = 300.0f - Scene.instance.gameTime;
+
+			float timeA = Scene.instance.gameTime / 300.0f;
+			timeA = timeA * times.Length;
+
+			int index = Mathf.FloorToInt(timeA);
+			index = Mathf.Min(Mathf.Max(index, 0), times.Length-1);
+
+			int mins = Mathf.FloorToInt((timeA - Mathf.Floor(timeA)) * 60.0f);
+
+			string sep = mins % 2 == 0? strColon : strSpace;
+			string post = index < 6? strPM : strAM;
+
+			txtTime.text = times[index].ToString(strFormat) + sep + mins.ToString(strFormat) + post;
+
 		}
 
 		private void OnResize() {
@@ -70,6 +111,11 @@ namespace KeepTheFire.Scenes.Game {
 			imgFade.color = imgFadeColor;
 		}
 
+		private void OnIntroAnimationUpdate(float a) {
+			a = Dugan.TimeAnimation.GetNormalizedTimeInTimeSlice(a, 0.0f, 0.25f);
+			a = Dugan.Mathf.Easing.EaseInOutCubic(a);
+			introCG.alpha = a;
+		}
 
 	}
 }

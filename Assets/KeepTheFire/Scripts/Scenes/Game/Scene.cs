@@ -9,9 +9,11 @@ namespace KeepTheFire.Scenes.Game {
 
 		private HeadsUpDisplay headsUpDisplay = null;
 
+		private ParticleSystem rainParticles = null;
+
 		public FirePit firePit { get; internal set; }
 
-		private Logs logs = null;
+		public Logs logs {get; internal set; }
 
 		private GameObject pool = null;
 		private Deer[] deers = null;
@@ -24,6 +26,16 @@ namespace KeepTheFire.Scenes.Game {
 		public float fireHealth = 0.5f;
 
 		public float logStashe = 0.5f;
+
+		public float gameTime = 0.0f;
+
+		private bool bIsRaining = false;
+
+		private Dugan.UI.Button btnFlashlight = null;
+
+		private Dugan.UI.Button btnUmbrella = null;
+
+		private float rainMapY = 0.0f;
 
 		private void Awake() {
 			instance = this;
@@ -42,6 +54,8 @@ namespace KeepTheFire.Scenes.Game {
 			firePit = level.Find("FirePit").gameObject.AddComponent<FirePit>();
 
 			logs = level.Find("Logs").gameObject.AddComponent<Logs>();
+
+			rainParticles = level.Find("RainParticles").GetComponent<ParticleSystem>();
 
 			Transform allEyes = level.Find("AllEyes");
 
@@ -68,9 +82,30 @@ namespace KeepTheFire.Scenes.Game {
 				squirrels[i].transform.SetParent(pool.transform);
 				squirrels[i].transform.localPosition = Vector3.zero;
 			}
+
+			btnFlashlight = level.Find("Flashlight").gameObject.AddComponent<Dugan.UI.Button>();
+			btnFlashlight.OnClicked += OnClickBtnFlashlight;
+			btnFlashlight.gameObject.SetActive(true);
+
+			btnUmbrella = level.Find("Umbrella").gameObject.AddComponent<Dugan.UI.Button>();
+			btnUmbrella.OnClicked += OnClickBtnUmbrella;
+			firePit.umbrella.SetActive(false);
+
+			rainMapY = Random.Range(0.0f, 5.0f);
 		}
 
 		private void Update() {
+
+			//Is raining or not.
+			float chanceOfRain = (Dugan.Mathf.Simplex.Noise(gameTime / 50.0f, rainMapY) + 1) * 0.5f;
+			bIsRaining = chanceOfRain > 0.5f;
+
+			//Update the rain particles
+			if (bIsRaining && !rainParticles.isPlaying) {
+				rainParticles.Play();
+			} else if (!bIsRaining && rainParticles.isPlaying) {
+				rainParticles.Stop();
+			}
 			
 			//Move player torch
 			Ray ray = camera.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.5f));
@@ -80,8 +115,12 @@ namespace KeepTheFire.Scenes.Game {
 
 			//Update fire health over time
 			if (fireHealth > 0.0f) {
-				
-				float fireDecay = 0.01f * Time.deltaTime;//Loose 1% of total health per second (100 seconds til death)
+				float decayValue = 0.01f;
+				if (bIsRaining)
+					decayValue += 0.01f;
+
+				float fireDecay = decayValue * Time.deltaTime;//Loose 1% of total health per second (100 seconds til death)
+
 				fireDecay *= -1;
 				fireHealth += fireDecay;
 			}
@@ -94,6 +133,26 @@ namespace KeepTheFire.Scenes.Game {
 			if (fireHealth <= 0.0f) {
 				
 			}
+
+			gameTime += Time.deltaTime;
+
+
+		}
+
+		private void OnClickBtnFlashlight(Dugan.Input.PointerTarget pointerTarget, string args) {
+			//Set the flashlight as the active tool
+			btnUmbrella.gameObject.SetActive(true);
+			btnFlashlight.gameObject.SetActive(false);
+			playerTorch.gameObject.SetActive(true);
+			firePit.umbrella.SetActive(false);
+		}
+
+		private void OnClickBtnUmbrella(Dugan.Input.PointerTarget pointerTarget, string args) {
+			//Set the umbrella as the active tool
+			btnUmbrella.gameObject.SetActive(false);
+			btnFlashlight.gameObject.SetActive(true);
+			playerTorch.gameObject.SetActive(false);
+			firePit.umbrella.SetActive(true);
 		}
 	}
 }
