@@ -30,7 +30,7 @@ namespace KeepTheFire.Scenes.Game
         void Update()
         {
             if(state == 0) {
-                if(Random.Range(0.0f, 1.0f) < 0.0005f) {
+                if(Random.Range(0.0f, 1.0f) < 0.001f) {
                     Activate();
                     state++;
                 }
