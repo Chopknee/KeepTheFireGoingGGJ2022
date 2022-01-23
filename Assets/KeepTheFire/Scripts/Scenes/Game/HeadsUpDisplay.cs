@@ -13,6 +13,9 @@ namespace KeepTheFire.Scenes.Game {
 		private Dugan.UI.Button btnMenu = null;
 
 		private UnityEngine.UI.Image imgFade = null;
+		private Color imgFadeColor = Color.black;
+
+		private Dugan.TimeAnimation fadeAnimation = null;
 
 		private void Awake() {
 			camera = transform.Find("Camera").GetComponent<UnityEngine.Camera>();
@@ -25,6 +28,15 @@ namespace KeepTheFire.Scenes.Game {
 			btnMenu.OnClicked += OnClickBtnMenu;
 
 			Dugan.Screen.OnResize += OnResize;
+
+			imgFade = canvas.Find("ImgFade").GetComponent<UnityEngine.UI.Image>();
+			imgFadeColor = imgFade.color;
+
+			fadeAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
+			fadeAnimation.SetLengthInSeconds(1.0f);
+			fadeAnimation.OnAnimationUpdate += OnFadeAnimationUpdate;
+			fadeAnimation.SetDirection(1, true);
+			fadeAnimation.SetDirection(-1);
 		}
 
 
@@ -51,6 +63,11 @@ namespace KeepTheFire.Scenes.Game {
 
 		private void OnClickBtnMenu(Dugan.Input.PointerTarget pointerTarget, string args) {
 			
+		}
+
+		private void OnFadeAnimationUpdate(float a) {
+			imgFadeColor.a = a;
+			imgFade.color = imgFadeColor;
 		}
 
 
