@@ -46,6 +46,8 @@ namespace KeepTheFire.Scenes.Game {
 		}
 
         private void OnClickButton(Dugan.Input.PointerTarget pointerTarget, string args) {
+            if (Scene.instance.logStashe <= 0.0f)
+                return;
             //Add logs to the fire.
             //Update pile rendering.
             Scene.instance.logStashe -= 0.01f;

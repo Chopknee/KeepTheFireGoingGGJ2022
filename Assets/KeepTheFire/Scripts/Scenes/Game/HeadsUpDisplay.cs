@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace KeepTheFire.Scenes.Game {
-    public class HeadsUpDisplay : MonoBehaviour {
+	public class HeadsUpDisplay : MonoBehaviour {
 
 		private new UnityEngine.Camera camera = null;
 

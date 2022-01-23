@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace KeepTheFire.Scenes.Game {
-    public class Scene : MonoBehaviour {
+	public class Scene : MonoBehaviour {
 
 		private new UnityEngine.Camera camera = null;
 
@@ -15,6 +15,7 @@ namespace KeepTheFire.Scenes.Game {
 
 		private GameObject pool = null;
 		private Deer[] deers = null;
+		private Squirrel[] squirrels = null;
 
 		private Light playerTorch = null;
 
@@ -54,11 +55,19 @@ namespace KeepTheFire.Scenes.Game {
 			GameObject deerPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/Animals/Deer_Buck");
 			deers = new Deer[5];
 
-			for(int i = 0; i < deers.Length; i++) {
+			for (int i = 0; i < deers.Length; i++) {
 				deers[i] = Instantiate(deerPrefab).AddComponent<Deer>();
 				deers[i].transform.SetParent(pool.transform);
 				deers[i].transform.localPosition = Vector3.zero;
-            }
+			}
+
+			GameObject squirrelPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/Animals/Squirrel");
+			squirrels = new Squirrel[15];
+			for (int i = 0; i < squirrels.Length; i++) {
+				squirrels[i] = Instantiate(squirrelPrefab).AddComponent<Squirrel>();
+				squirrels[i].transform.SetParent(pool.transform);
+				squirrels[i].transform.localPosition = Vector3.zero;
+			}
 		}
 
 		private void Update() {
@@ -78,6 +87,8 @@ namespace KeepTheFire.Scenes.Game {
 			}
 
 			fireHealth = Mathf.Min(Mathf.Max(fireHealth, 0.0f), 1.0f);
+
+			logStashe = Mathf.Min(Mathf.Max(logStashe, 0.0f), 1.0f);
 
 			//Check for game over
 			if (fireHealth <= 0.0f) {
