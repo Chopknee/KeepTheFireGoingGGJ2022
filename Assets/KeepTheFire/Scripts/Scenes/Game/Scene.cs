@@ -35,7 +35,15 @@ namespace KeepTheFire.Scenes.Game {
 
 		private Dugan.UI.Button btnUmbrella = null;
 
+		public Menu menu {get; internal set;}
+
 		private float rainMapY = 0.0f;
+
+		public AudioClip rainClip = null;
+		public AudioClip rainUmbrellaClip = null;
+		private AudioSource rainSource = null;
+
+		private bool bGameOver = false;
 
 		private void Awake() {
 			instance = this;
@@ -47,6 +55,10 @@ namespace KeepTheFire.Scenes.Game {
 			headsUpDisplay = Instantiate(hudPrefab).AddComponent<HeadsUpDisplay>();
 			headsUpDisplay.transform.position = new Vector3(0.0f, 0.0f, 1000.0f);
 
+			GameObject menuPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/Menu");
+			menu = Instantiate(menuPrefab).AddComponent<Menu>();
+			menu.transform.position = new Vector3(0.0f, 0.0f, 1000.0f);
+
 			Transform level = transform.Find("Level");
 
 			playerTorch = level.Find("Player/Light").GetComponent<Light>();
@@ -56,6 +68,8 @@ namespace KeepTheFire.Scenes.Game {
 			logs = level.Find("Logs").gameObject.AddComponent<Logs>();
 
 			rainParticles = level.Find("RainParticles").GetComponent<ParticleSystem>();
+			rainSource = rainParticles.GetComponent<AudioSource>();
+			rainSource.clip = rainClip;
 
 			Transform allEyes = level.Find("AllEyes");
 
@@ -95,7 +109,9 @@ namespace KeepTheFire.Scenes.Game {
 		}
 
 		private void Update() {
-
+			if (menu.GetDirection() > 0)
+				return;
+				
 			//Is raining or not.
 			float chanceOfRain = (Dugan.Mathf.Simplex.Noise(gameTime / 50.0f, rainMapY) + 1) * 0.5f;
 			bIsRaining = chanceOfRain > 0.5f;
@@ -103,8 +119,10 @@ namespace KeepTheFire.Scenes.Game {
 			//Update the rain particles
 			if (bIsRaining && !rainParticles.isPlaying) {
 				rainParticles.Play();
+				rainSource.Play();
 			} else if (!bIsRaining && rainParticles.isPlaying) {
 				rainParticles.Stop();
+				rainSource.Stop();
 			}
 			
 			//Move player torch
@@ -129,13 +147,21 @@ namespace KeepTheFire.Scenes.Game {
 
 			logStashe = Mathf.Min(Mathf.Max(logStashe, 0.0f), 1.0f);
 
-			//Check for game over
-			if (fireHealth <= 0.0f) {
-				
+			if (!bGameOver) {
+				//Check for game over
+				if (fireHealth <= 0.0f) {
+					bGameOver = true;
+					headsUpDisplay.GameOver(false);
+				}
+
+				if (gameTime >= 300) {
+					bGameOver = true;
+					headsUpDisplay.GameOver(true);
+				}
+
 			}
 
 			gameTime += Time.deltaTime;
-
 
 		}
 
@@ -145,6 +171,7 @@ namespace KeepTheFire.Scenes.Game {
 			btnFlashlight.gameObject.SetActive(false);
 			playerTorch.gameObject.SetActive(true);
 			firePit.umbrella.SetActive(false);
+			rainSource.clip = rainClip;
 		}
 
 		private void OnClickBtnUmbrella(Dugan.Input.PointerTarget pointerTarget, string args) {
@@ -153,6 +180,7 @@ namespace KeepTheFire.Scenes.Game {
 			btnFlashlight.gameObject.SetActive(true);
 			playerTorch.gameObject.SetActive(false);
 			firePit.umbrella.SetActive(true);
+			rainSource.clip = rainUmbrellaClip;
 		}
 	}
 }

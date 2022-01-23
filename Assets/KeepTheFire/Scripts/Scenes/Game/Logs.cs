@@ -11,7 +11,11 @@ namespace KeepTheFire.Scenes.Game {
 
         private GameObject[] logFillStates = null;
 
+        private AudioSource audioSource = null;
+
         private void Awake() {
+
+            audioSource = GetComponent<AudioSource>();
 
             logFillStates = new GameObject[4];
 
@@ -48,6 +52,8 @@ namespace KeepTheFire.Scenes.Game {
         private void OnClickButton(Dugan.Input.PointerTarget pointerTarget, string args) {
             if (Scene.instance.logStashe <= 0.0f)
                 return;
+
+            audioSource.Play();
             //Add logs to the fire.
             //Update pile rendering.
             Scene.instance.logStashe -= 0.01f;

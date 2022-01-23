@@ -16,6 +16,7 @@ namespace KeepTheFire.Scenes.Game {
 		private Color imgFadeColor = Color.black;
 
 		private CanvasGroup introCG = null;
+		private CanvasGroup gameOverCG = null;
 
 		private TMPro.TextMeshProUGUI txtTime = null;
 		private int[] times = { 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7};
@@ -28,6 +29,8 @@ namespace KeepTheFire.Scenes.Game {
 
 		private Dugan.TimeAnimation fadeAnimation = null;
 		private Dugan.TimeAnimation introAnimation = null;
+
+		private Dugan.TimeAnimation endAnimation = null;
 
 		private void Awake() {
 			camera = transform.Find("Camera").GetComponent<UnityEngine.Camera>();
@@ -47,6 +50,7 @@ namespace KeepTheFire.Scenes.Game {
 			imgFade.color = imgFadeColor;
 
 			introCG = canvas.Find("Intro").GetComponent<CanvasGroup>();
+			gameOverCG = canvas.Find("GameOver").GetComponent<CanvasGroup>();
 
 			txtTime = canvas.Find("Watch/TxtTime").GetComponent<TMPro.TextMeshProUGUI>();
 
@@ -61,6 +65,12 @@ namespace KeepTheFire.Scenes.Game {
 			introAnimation.OnAnimationUpdate += OnIntroAnimationUpdate;
 			introAnimation.SetDirection(1, true);
 			introAnimation.SetDirection(-1);
+
+			endAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
+			endAnimation.SetLengthInSeconds(5.0f);
+			endAnimation.OnAnimationUpdate += OnEndAnimationUpdate;
+			endAnimation.OnAnimationComplete += OnEndAnimationComplete;
+			endAnimation.SetDirection(-1, true);
 		}
 
 
@@ -103,7 +113,10 @@ namespace KeepTheFire.Scenes.Game {
 		}
 
 		private void OnClickBtnMenu(Dugan.Input.PointerTarget pointerTarget, string args) {
-			
+			if (Scene.instance.menu.GetDirection() < 0)
+				Scene.instance.menu.SetDirection(1);
+			else
+				Scene.instance.menu.SetDirection(-1);
 		}
 
 		private void OnFadeAnimationUpdate(float a) {
@@ -115,6 +128,29 @@ namespace KeepTheFire.Scenes.Game {
 			a = Dugan.TimeAnimation.GetNormalizedTimeInTimeSlice(a, 0.0f, 0.25f);
 			a = Dugan.Mathf.Easing.EaseInOutCubic(a);
 			introCG.alpha = a;
+		}
+
+		public void GameOver(bool won) {
+			gameOverCG.transform.Find("YouDied").gameObject.SetActive(!won);
+			gameOverCG.transform.Find("YouLived").gameObject.SetActive(won);
+			endAnimation.SetDirection(1);
+		}
+
+		private void OnEndAnimationUpdate(float a) {
+			a = Dugan.TimeAnimation.GetNormalizedTimeInTimeSlice(a, 0.0f, 0.25f);
+			a = Dugan.Mathf.Easing.EaseInOutCubic(a);
+			gameOverCG.alpha = a;
+		}
+
+		private void OnEndAnimationComplete() {
+			if (endAnimation.GetDirection() == 1) {
+				//Restart the scene!
+				UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+			}
+		}
+
+		private void OnDisable() {
+			Dugan.Screen.OnResize -= OnResize;
 		}
 
 	}
