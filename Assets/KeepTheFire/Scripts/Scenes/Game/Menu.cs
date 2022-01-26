@@ -54,7 +54,7 @@ namespace KeepTheFire.Scenes.Game {
 		}
 
 		private void OnAnimationUpdate(float a) {
-			a = Dugan.Mathf.Easing.EaseInOutExpo(a);
+			a = Dugan.Mathf.Easing.EaseInOutCirc(a);
 			transform.localScale = Vector3.one * a;
 		}
 

@@ -13,6 +13,7 @@ namespace KeepTheFire {
 
 			Application.targetFrameRate = 60;
 			Dugan.Screen.referenceSize = new Vector2(1920.0f, 1080.0f);
+			Dugan.Input.Raycaster.queryTriggerInteraction = QueryTriggerInteraction.Ignore;
 
 		}
 

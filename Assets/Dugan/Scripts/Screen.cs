@@ -27,6 +27,7 @@ namespace Dugan {
 		public void OnEnable() {
 			//Bleh
 			Dugan.PreScriptExecution.EarlyUpdate += EarlyUpdate;
+			Resize();
 		}
 
 		private void OnDisable() {

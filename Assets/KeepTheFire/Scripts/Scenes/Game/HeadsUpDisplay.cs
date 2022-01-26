@@ -42,8 +42,6 @@ namespace KeepTheFire.Scenes.Game {
 			btnMenu = canvas.Find("BtnMenu").gameObject.AddComponent<Dugan.UI.Button>();
 			btnMenu.OnClicked += OnClickBtnMenu;
 
-			Dugan.Screen.OnResize += OnResize;
-
 			imgFade = canvas.Find("ImgFade").GetComponent<UnityEngine.UI.Image>();
 			imgFadeColor = imgFade.color;
 			imgFadeColor.a = 0;
@@ -71,20 +69,26 @@ namespace KeepTheFire.Scenes.Game {
 			endAnimation.OnAnimationUpdate += OnEndAnimationUpdate;
 			endAnimation.OnAnimationComplete += OnEndAnimationComplete;
 			endAnimation.SetDirection(-1, true);
+
+			Dugan.Screen.OnResize += OnResize;
+			OnResize();
 		}
 
 
 		private Color hotColor = new Color(0.9529412f, 0.2907785f, 0.2039216f);
 		private Color coldColor = new Color(0.2037497f, 0.8857332f, 0.9528302f);
 
+		private float lastHealth = 0.0f;
+
 		private void Update() {
 			//Cold color (0.2037497, 0.8857332, 0.9528302)
 			//Hot color (0.9529412, 0.2907785, 0.2039216)
 			//Max alpha 0.2509804
 
-			Color col = Color.Lerp(coldColor, hotColor, Scene.instance.fireHealth);
+			lastHealth = Mathf.Lerp(lastHealth, Scene.instance.firePit.health, Time.deltaTime * 10.0f);
 
-			float a = (Mathf.Cos(Scene.instance.fireHealth * Mathf.PI * 2.0f) + 1.0f) * 0.5f;
+			Color col = Color.Lerp(coldColor, hotColor, lastHealth);
+			float a = (Mathf.Cos(lastHealth * Mathf.PI * 2.0f) + 1.0f) * 0.5f;
 			col.a = Mathf.Lerp(0.0f, 0.30f, a);
 
 			imgVingette.color = col;

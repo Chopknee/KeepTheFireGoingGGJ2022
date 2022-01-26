@@ -40,7 +40,7 @@ namespace KeepTheFire.Scenes.Game {
                     state = 2;
                     transform.forward = -transform.forward;
                     // Remove Log from pile
-                    Scene.instance.logStashe -= 0.01f;
+                    Scene.instance.logs.count -= 1;
                     transform.Find("Wood_Whole").gameObject.SetActive(true);
                 }
             }

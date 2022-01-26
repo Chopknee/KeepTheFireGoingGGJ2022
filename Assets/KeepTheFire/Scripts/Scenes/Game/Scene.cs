@@ -23,14 +23,10 @@ namespace KeepTheFire.Scenes.Game {
 		private Light playerTorch = null;
 
 		public static Scene instance = null;
-		
-		public float fireHealth = 0.5f;
-
-		public float logStashe = 0.5f;
 
 		public float gameTime = 0.0f;
 
-		private bool bIsRaining = false;
+		public bool bIsRaining {get; internal set;}
 
 		private Dugan.UI.Button btnFlashlight = null;
 
@@ -63,6 +59,7 @@ namespace KeepTheFire.Scenes.Game {
 			Transform level = transform.Find("Level");
 
 			playerTorch = level.Find("Player/Light").GetComponent<Light>();
+			playerTorch.transform.Find("cone").gameObject.AddComponent<TorchCollider>();
 
 			firePit = level.Find("FirePit").gameObject.AddComponent<FirePit>();
 
@@ -113,6 +110,11 @@ namespace KeepTheFire.Scenes.Game {
 			firePit.umbrella.SetActive(false);
 
 			rainMapY = Random.Range(0.0f, 5.0f);
+
+			//Start the fire with an initial amount of logs.
+			for (int i = 0; i < 4; i++) {
+				firePit.AddLog();
+			}
 		}
 
 		private void Update() {
@@ -134,29 +136,13 @@ namespace KeepTheFire.Scenes.Game {
 			
 			//Move player torch
 			Ray ray = camera.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.5f));
-			if (Physics.Raycast(ray, out RaycastHit hit, camera.farClipPlane)) {
+			if (Physics.Raycast(ray, out RaycastHit hit, camera.farClipPlane, camera.cullingMask, QueryTriggerInteraction.Ignore)) {
 				playerTorch.transform.forward = hit.point - playerTorch.transform.position;
 			}
 
-			//Update fire health over time
-			if (fireHealth > 0.0f) {
-				float decayValue = 0.01f;
-				if (bIsRaining)
-					decayValue += 0.01f;
-
-				float fireDecay = decayValue * Time.deltaTime;//Loose 1% of total health per second (100 seconds til death)
-
-				fireDecay *= -1;
-				fireHealth += fireDecay;
-			}
-
-			fireHealth = Mathf.Min(Mathf.Max(fireHealth, 0.0f), 1.0f);
-
-			logStashe = Mathf.Min(Mathf.Max(logStashe, 0.0f), 1.0f);
-
 			if (!bGameOver) {
 				//Check for game over
-				if (fireHealth <= 0.0f) {
+				if (firePit.health <= 0.0f) {
 					bGameOver = true;
 					headsUpDisplay.GameOver(false);
 				}
@@ -165,7 +151,6 @@ namespace KeepTheFire.Scenes.Game {
 					bGameOver = true;
 					headsUpDisplay.GameOver(true);
 				}
-
 			}
 
 			gameTime += Time.deltaTime;

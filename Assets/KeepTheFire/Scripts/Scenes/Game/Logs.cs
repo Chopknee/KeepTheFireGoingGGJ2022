@@ -3,65 +3,59 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace KeepTheFire.Scenes.Game {
-    public class Logs : MonoBehaviour {
+	public class Logs : MonoBehaviour {
 
-        private Dugan.UI.Button button = null;
+		private GameObject[] logFillStates = null;
 
-        private float lastLogStashe = 0.0f;
+		private AudioSource audioSource = null;
 
-        private GameObject[] logFillStates = null;
+		public int count = 0;
+		private int lastCount = 0;
 
-        private AudioSource audioSource = null;
+		private void Awake() {
 
-        private void Awake() {
+			audioSource = GetComponent<AudioSource>();
 
-            audioSource = GetComponent<AudioSource>();
+			Transform buttons = transform.Find("Buttons");
 
-            logFillStates = new GameObject[4];
+			logFillStates = new GameObject[buttons.childCount];
 
-            for (int i = 0; i < logFillStates.Length; i++) {
-                logFillStates[i] = transform.Find(i.ToString()).gameObject;
+			for (int i = 0; i < logFillStates.Length; i++) {
+				logFillStates[i] = buttons.GetChild(i).gameObject;
+				Dugan.UI.Button btn = logFillStates[i].AddComponent<Dugan.UI.Button>();
+				btn.OnClicked += OnClickButton;
 			}
 
-            button = transform.Find("Button").gameObject.AddComponent<Dugan.UI.Button>();
-            button.OnClicked += OnClickButton;
+			RenderPile();
 
-        }
-
-        private void Update() {
-            if (Scene.instance.logStashe != lastLogStashe) {
-                lastLogStashe = Scene.instance.logStashe;
-                RenderPile();
-			}
 		}
 
-        private void RenderPile() {
-            int index = Mathf.FloorToInt(logFillStates.Length * Scene.instance.logStashe);
-            index = Mathf.Max(0, Mathf.Min(logFillStates.Length - 1, index));
-            for (int i = 0; i < logFillStates.Length; i++) {
-                bool on = i <= index;
-                if (Scene.instance.logStashe == 0)
-                    on = false;
-                if (Scene.instance.logStashe >= 1)
-                    on = true;
-
-                logFillStates[i].SetActive(on);
+		private void Update() {
+			if (count != lastCount) {
+				lastCount = count;
+				RenderPile();
 			}
 		}
 
-        private void OnClickButton(Dugan.Input.PointerTarget pointerTarget, string args) {
-            if (Scene.instance.logStashe <= 0.0f)
-                return;
+		private void RenderPile() {
+			for (int i = 0; i < logFillStates.Length; i++) {
+				bool on = i < count;
+				logFillStates[i].SetActive(on);
+			}
+		}
 
-            audioSource.Play();
-            //Add logs to the fire.
-            //Update pile rendering.
-            Scene.instance.logStashe -= 0.01f;
-            Scene.instance.fireHealth += 0.01f;
+		private void OnClickButton(Dugan.Input.PointerTarget pointerTarget, string args) {
+			if (count <= 0)
+				return;
 
-            Scene.instance.firePit.BurstSparks();
-            RenderPile();
+			audioSource.Play();
+			
+			count -= 1;
+			Scene.instance.firePit.AddLog();
+
+			Scene.instance.firePit.BurstSparks();
+			RenderPile();
 
 		}
-    }
+	}
 }

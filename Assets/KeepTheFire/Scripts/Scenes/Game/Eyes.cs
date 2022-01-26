@@ -11,6 +11,9 @@ namespace KeepTheFire.Scenes.Game {
 
         private Transform quad = null;
 
+		private float flashlightOver = 1;
+		private float flashlightOverSmooth = 1;
+
         private void Awake() {
 
             if (eyeTextures == null) {
@@ -42,6 +45,8 @@ namespace KeepTheFire.Scenes.Game {
                     timeAnimation.SetDirection(1);
                 }
             }
+
+			flashlightOverSmooth = Mathf.Lerp(flashlightOverSmooth, flashlightOver, Time.deltaTime * 20.0f);
 		}
 
         private void OnAnimationUpdate(float a) {
@@ -50,8 +55,16 @@ namespace KeepTheFire.Scenes.Game {
 
             a = (1.0f - Mathf.Cos(a * Mathf.PI * 2.0f)) * 0.5f;
 
-            quad.localScale = new Vector3(1.0f, a * a1, 1.0f);
+            quad.localScale = new Vector3(1.0f, a * a1 * flashlightOverSmooth, 1.0f);
 
+		}
+
+		private void OnFlashlightHovered() {
+			flashlightOver = 0;
+		}
+
+		private void OnFlashlightLeft() {
+			flashlightOver = 1;
 		}
     }
 }

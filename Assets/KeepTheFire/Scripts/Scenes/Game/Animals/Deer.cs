@@ -112,7 +112,7 @@ namespace KeepTheFire.Scenes.Game
             }
 
             transform.Find("Wood_Whole").gameObject.SetActive(false);
-            Scene.instance.logStashe += 0.1f;
+            Scene.instance.logs.count += 1;
             state = 2;
         }
     }

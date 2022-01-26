@@ -44,7 +44,7 @@ namespace KeepTheFire.Scenes.Game {
 				
 			if (state == 0) {
 				//Idle not spawned, checking for chance to spawn
-				if (Random.Range(0.0f, 1.0f) < 0.01f) {
+				if (Random.Range(0.0f, 1.0f) < 0.001f) {
 					//Spawn 
 					Activate();
 				}
@@ -61,7 +61,7 @@ namespace KeepTheFire.Scenes.Game {
 					particles.SetActive(true);
 					log.SetActive(true);
 					//Remove some fire health
-					Scene.instance.fireHealth += -0.05f;
+					Scene.instance.firePit.RemoveLog();
 				}
 			}
 

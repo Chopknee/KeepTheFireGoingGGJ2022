@@ -10,6 +10,8 @@ namespace Dugan.Input {
 
 		public bool bForceCameraRefresh = false;
 
+		public static QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal;
+
         public static Raycaster Instance() {
             return instance;
         }
@@ -72,7 +74,8 @@ namespace Dugan.Input {
 
                 for (int cameraIndex = 0; cameraIndex < cameras.Count; cameraIndex++) {
                     Camera cam = cameras[cameraIndex];
-                    if (Physics.Raycast(cam.ScreenPointToRay(pointer.position), out RaycastHit hit, cam.farClipPlane, cam.cullingMask)) {
+
+                    if (Physics.Raycast(cam.ScreenPointToRay(pointer.position), out RaycastHit hit, cam.farClipPlane, cam.cullingMask, queryTriggerInteraction)) {
 						hits.Add(hit.point);
                         //The initial hit
 						//Debug.Log("Hit collider " + hit.collider.name);
