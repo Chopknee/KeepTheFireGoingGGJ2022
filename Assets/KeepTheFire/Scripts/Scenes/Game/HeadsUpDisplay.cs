@@ -40,7 +40,7 @@ namespace KeepTheFire.Scenes.Game {
 			imgVingette = canvas.Find("ImgVingette").GetComponent<UnityEngine.UI.RawImage>();
 
 			btnMenu = canvas.Find("BtnMenu").gameObject.AddComponent<Dugan.UI.Button>();
-			btnMenu.OnClicked += OnClickBtnMenu;
+			btnMenu.OnPointerUp += OnClickBtnMenu;
 
 			imgFade = canvas.Find("ImgFade").GetComponent<UnityEngine.UI.Image>();
 			imgFadeColor = imgFade.color;

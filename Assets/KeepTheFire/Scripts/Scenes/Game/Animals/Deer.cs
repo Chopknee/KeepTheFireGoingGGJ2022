@@ -12,7 +12,7 @@ namespace KeepTheFire.Scenes.Game
 
         public int state = 0;
 
-        public float elevation = 2.0f;
+        public float elevation = 0.0f;
         public float startOffsetX = -16.0f;
         public float startOffsetZ = 0f;
         public float offsetZ = 0f;
@@ -26,7 +26,7 @@ namespace KeepTheFire.Scenes.Game
         {
             // gameObject.SetActive(false);
             button = gameObject.AddComponent<Dugan.UI.Button>();
-            button.OnClicked += OnButtonClicked;
+            button.OnPointerUp += OnButtonClicked;
             source = GetComponent<AudioSource>();
         }
 

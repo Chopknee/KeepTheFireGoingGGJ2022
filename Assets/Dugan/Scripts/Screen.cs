@@ -81,6 +81,8 @@ namespace Dugan {
 				}
 			}
 
+			CalculateSafeAreaOffsetsInUnits();
+
 			//intended for global app utilities
 			if (OnEarlyResize != null)
 				OnEarlyResize();
@@ -93,6 +95,33 @@ namespace Dugan {
         public static Vector2 referenceSize = new Vector2(1920.0f, 1080.0f);
 
         public static float minLetterboxRatio = 0.5625f;
+
+		public static float safeAreaOffsetTop = 0.0f;
+		public static float safeAreaOffsetBottom = 0.0f;
+		public static float safeAreaOffsetLeft = 0.0f;
+		public static float safeAreaOffsetRight = 0.0f;
+		
+		public static void CalculateSafeAreaOffsetsInUnits() {
+			Rect safeArea = UnityEngine.Screen.safeArea;
+			
+			Vector2 fullSizeInUnits = referenceSize;
+			float offset = GetScreenRatioDifferenceInUnits(false);
+			if (UnityEngine.Screen.width >= UnityEngine.Screen.height)
+				fullSizeInUnits.x += offset;
+			else
+				fullSizeInUnits.y += offset;
+			
+			float percent = 0.0f;
+			if (UnityEngine.Screen.width >= UnityEngine.Screen.height)
+				percent = fullSizeInUnits.y / (float)UnityEngine.Screen.height;
+			else
+				percent = fullSizeInUnits.x / (float)UnityEngine.Screen.width;
+			
+			safeAreaOffsetTop = fullSizeInUnits.y - ((safeArea.y + safeArea.height) * percent);
+			safeAreaOffsetBottom = safeArea.y * percent;
+			safeAreaOffsetLeft = safeArea.x * percent;
+			safeAreaOffsetRight = fullSizeInUnits.x - ((safeArea.x + safeArea.width) * percent);
+		}
 
         public static float GetScreenRatioPercentOfDefaultRatio(bool letterbox) {
             float ratio;

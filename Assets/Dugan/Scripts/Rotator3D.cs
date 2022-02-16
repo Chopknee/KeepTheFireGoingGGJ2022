@@ -56,7 +56,7 @@ namespace Dugan {
 				rotationalSpeed = 0.0f;
 			}
 
-			bDragging = dragPointer != null && dragPointer.clickState == Dugan.Input.Pointers.Pointer.ClickState.Held;
+			bDragging = dragPointer != null && dragPointer.state == Dugan.Input.Pointers.Pointer.ClickState.Held;
 
 			if (bLastDragging != bDragging) {
 				if (bDragging && !bRotating) {

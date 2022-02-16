@@ -19,7 +19,7 @@ namespace Dugan {
 		private void Awake() {
 			Dugan.UI.Button btnBlocker = transform.Find("Blocker").gameObject.AddComponent<Dugan.UI.Button>();
 			btnBlocker.unSelectOnPointerUp = true;
-			btnBlocker.OnClicked += OnClickBlocker;
+			btnBlocker.OnPointerUp += OnClickBlocker;
 		}
 
 		public void Init(KeyboardSettings settings, int length) {

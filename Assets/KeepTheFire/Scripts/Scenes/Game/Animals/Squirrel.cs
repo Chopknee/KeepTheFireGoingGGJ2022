@@ -30,7 +30,7 @@ namespace KeepTheFire.Scenes.Game {
 			log.SetActive(false);
 
 			button = gameObject.AddComponent<Dugan.UI.Button>();
-			button.OnClicked += OnClickButton;
+			button.OnPointerUp += OnClickButton;
 
 			source = GetComponent<AudioSource>();
 

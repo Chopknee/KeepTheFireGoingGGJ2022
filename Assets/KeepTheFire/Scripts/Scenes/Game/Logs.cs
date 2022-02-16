@@ -23,7 +23,7 @@ namespace KeepTheFire.Scenes.Game {
 			for (int i = 0; i < logFillStates.Length; i++) {
 				logFillStates[i] = buttons.GetChild(i).gameObject;
 				Dugan.UI.Button btn = logFillStates[i].AddComponent<Dugan.UI.Button>();
-				btn.OnClicked += OnClickButton;
+				btn.OnPointerUp += OnClickButton;
 			}
 
 			RenderPile();

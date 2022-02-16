@@ -102,11 +102,11 @@ namespace KeepTheFire.Scenes.Game {
 			wolfs[0].transform.localPosition = Vector3.zero;
 
 			btnFlashlight = level.Find("Flashlight").gameObject.AddComponent<Dugan.UI.Button>();
-			btnFlashlight.OnClicked += OnClickBtnFlashlight;
+			btnFlashlight.OnPointerUp += OnClickBtnFlashlight;
 			btnFlashlight.gameObject.SetActive(true);
 
 			btnUmbrella = level.Find("Umbrella").gameObject.AddComponent<Dugan.UI.Button>();
-			btnUmbrella.OnClicked += OnClickBtnUmbrella;
+			btnUmbrella.OnPointerUp += OnClickBtnUmbrella;
 			firePit.umbrella.SetActive(false);
 
 			rainMapY = Random.Range(0.0f, 5.0f);

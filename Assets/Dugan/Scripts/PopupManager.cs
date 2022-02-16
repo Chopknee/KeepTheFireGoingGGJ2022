@@ -129,6 +129,24 @@ namespace Dugan {
 			return 0;
 		}
 
+		public static GameObject GetHighestDepthPopup() {
+			float maxDepth = -1;
+			int maxDepthIndex = -1;
+			for (int i = 0; i < popups.Count; i++) {
+				Popup p = popups[i];
+				for (int j = 0; j < p.cameras.Length; j++) {
+					if (p.cameras[j].depth > maxDepth) {
+						maxDepthIndex = i;
+						maxDepth = p.cameras[j].depth;
+					}
+				}
+			}
+			if (maxDepthIndex > -1)
+				return popups[maxDepthIndex].gameObject;
+			
+			return null;
+		}
+
 		private class Popup {
 			public Camera[] cameras;
 			public GameObject gameObject;

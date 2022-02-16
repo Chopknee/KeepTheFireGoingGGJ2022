@@ -17,21 +17,20 @@ namespace Dugan.Input.Pointers {
 			PointerManager.AddPointer(mousePointer);
 		}
 
-		public static TouchPointer GetTouchPointerByFingerID(int fingerID) {
-			return null;
-		}
-
 		private static int UpdateMousePointer() {
-			mousePointer.clickState = Pointer.ClickState.Hover;//Hover is default state for mouse cursor.
+			if (mousePointer.state == Pointer.ClickState.Released && UnityEngine.Input.GetMouseButtonUp(0))
+				mousePointer.state = Pointer.ClickState.Hover;//
 
-			mousePointer.Update(UnityEngine.Input.mousePosition);
+			mousePointer.state = Pointer.ClickState.Hover;//Hover is default state for mouse cursor.
 
 			if (UnityEngine.Input.GetMouseButtonDown(0))
-				mousePointer.clickState = Pointer.ClickState.Down;
+				mousePointer.state = Pointer.ClickState.Down;
 			else if (UnityEngine.Input.GetMouseButtonUp(0))
-				mousePointer.clickState = Pointer.ClickState.Up;
+				mousePointer.state = Pointer.ClickState.Up;
 			else if (UnityEngine.Input.GetMouseButton(0))
-				mousePointer.clickState = Pointer.ClickState.Held;
+				mousePointer.state = Pointer.ClickState.Held;
+
+			mousePointer.Update(UnityEngine.Input.mousePosition);
 
 			return 1;
 		}

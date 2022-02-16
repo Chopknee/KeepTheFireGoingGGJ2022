@@ -22,7 +22,7 @@ namespace Dugan.Input.Pointers {
 		}
 
 		public static TouchPointer GetTouchPointerByFingerID(int fingerID) {
-			Debug.Log("Getting touch pointer.");
+			//Debug.Log("Getting touch pointer.");
 			for (int i = 0; i < touchPointers.Count; i++) {
 				if (touchPointers[i].fingerID == fingerID)
 					return touchPointers[i];
@@ -33,7 +33,7 @@ namespace Dugan.Input.Pointers {
 		private static TouchPointer GetOrAllocateTouchPointer(int fingerID) {
 			TouchPointer tp = GetTouchPointerByFingerID(fingerID);
 			if (tp == null) {
-				Debug.Log("Touch pointer not found, assigning touch pointer.");
+				//Debug.Log("Touch pointer not found, assigning touch pointer.");
 				//Allocate a new touch pointer
 				for (int i = 0; i < touchPointers.Count; i++) {
 					if (touchPointers[i].active == false) {
@@ -45,7 +45,7 @@ namespace Dugan.Input.Pointers {
 				}
 
 				if (tp == null) {//This caches a new touch. This should only happen if the screen in question supports more than 10 touches.
-					Debug.Log("No inactive touch pointer found, caching new touch pointer.");
+					//Debug.Log("No inactive touch pointer found, caching new touch pointer.");
 					tp = new TouchPointer();
 					tp.fingerID = fingerID;
 					touchPointers.Add(tp);
@@ -59,28 +59,29 @@ namespace Dugan.Input.Pointers {
 		private static int UpdateTouchPointers() {
 			//Clear the states of dead touches
 			for (int i = 0; i < touchPointers.Count; i++) {
-				if (touchPointers[i].clickState == ClickState.Up) {
+				if (touchPointers[i].state == ClickState.Up) {
 					touchPointers[i].active = false;
 					touchPointers[i].fingerID = -1;
-					touchPointers[i].clickState = ClickState.Idle;
+					touchPointers[i].state = ClickState.Idle;
 				}
 			}
 
+			int touchCount = UnityEngine.Input.touchCount;
 			//Update touches with active touch data
-			for (int i = 0; i < UnityEngine.Input.touchCount; i++) {
+			for (int i = 0; i < touchCount; i++) {
 				UnityEngine.Touch touch = UnityEngine.Input.GetTouch(i);
-				TouchPointer tp = GetOrAllocateTouchPointer(touch.fingerId);
-				tp.Update(touch.position);
-				if (tp.clickState == ClickState.Down && touch.phase != TouchPhase.Ended)
-					tp.clickState = ClickState.Held;
+				TouchPointer pointer = GetOrAllocateTouchPointer(touch.fingerId);
+				pointer.Update(touch.position);
+				if (pointer.state == ClickState.Down && touch.phase != TouchPhase.Ended)
+					pointer.state = ClickState.Held;
 					
-				if (touch.phase == TouchPhase.Began)
-					tp.clickState = ClickState.Down;
+				if (touch.phase == TouchPhase.Began && pointer.state != ClickState.Released)
+					pointer.state = ClickState.Down;
 				else if (touch.phase == TouchPhase.Ended)
-					tp.clickState = ClickState.Up;
+					pointer.state = ClickState.Up;
 			}
 
-			return 0;
+			return touchCount;
 		}
 	}
 }

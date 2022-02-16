@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 namespace Dugan { 
-	public class SelectGameObjectsWithMissingScripts : Editor
+	public class SelectGameObjectsWithMissingScripts : UnityEditor.Editor
 	{
 		[MenuItem("Tools/Dugan Utilities/Select GameObjects With Missing Scripts")]
 		static void SelectGameObjects()
 		{
 			//Get the current scene and all top-level GameObjects in the scene hierarchy
 			//UnityEngine.SceneManagement.Scene
-			//UnityEngine.SceneManagement.SceneManager.cur
 			Scene currentScene = SceneManager.GetActiveScene();
 			GameObject[] rootObjects = currentScene.GetRootGameObjects();
 

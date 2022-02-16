@@ -23,13 +23,13 @@ namespace KeepTheFire.Scenes.Game {
 			canvas = transform.Find("Canvas") as RectTransform;
 
 			btnCredits = canvas.Find("BtnCredits").gameObject.AddComponent<Dugan.UI.Button>();
-			btnCredits.OnClicked += OnClickBtnCredits;
+			btnCredits.OnPointerUp += OnClickBtnCredits;
 
 			btnQuit = canvas.Find("BtnQuit").gameObject.AddComponent<Dugan.UI.Button>();
-			btnQuit.OnClicked += OnClickBtnQuit;
+			btnQuit.OnPointerUp += OnClickBtnQuit;
 
 			btnCreditsWindow = canvas.Find("Credits").gameObject.AddComponent<Dugan.UI.Button>();
-			btnCreditsWindow.OnClicked += OnClickCreditsWindow;
+			btnCreditsWindow.OnPointerUp += OnClickCreditsWindow;
 			btnCreditsWindow.gameObject.SetActive(false);
 
 			timeAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();

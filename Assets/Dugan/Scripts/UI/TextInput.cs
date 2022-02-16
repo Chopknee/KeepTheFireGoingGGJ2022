@@ -39,7 +39,7 @@ namespace Dugan.UI {
 			this.btnTextbox = btnTextbox;
 			this.width = width;
 
-			this.btnTextbox.OnClicked += OnClickBtnInput;
+			this.btnTextbox.OnPointerUp += OnClickBtnInput;
 			this.txtTMPro.text = placeholderText;
 
 			this.keyboardSettings = keyboardSettings;

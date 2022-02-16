@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Dugan.Input {
-    public class PointerManager : MonoBehaviour {
+	public class PointerManager : MonoBehaviour {
 
-        private static PointerManager instance = null;
+		private static PointerManager instance = null;
 
-        private static List<Pointers.Pointer> pointers = null;
+		private static List<Pointers.Pointer> pointers = null;
 
 		public static int pointerCount { get; private set;}//If a mouse is connected, this always returns 1
 		public static bool bAnyPointerDown { get; private set;}
@@ -25,22 +25,22 @@ namespace Dugan.Input {
 			pointerManagerUpdates.Remove(manager);
 		}
 
-        public static PointerManager Instance() {
-            return instance;
-        }
+		public static PointerManager Instance() {
+			return instance;
+		}
 
 		public static int GetPointerCacheCount() {
 			return pointers.Count;
 		}
 
-        public static Pointers.Pointer GetPointer(int index) {
-            if (index < pointers.Count)
-                return pointers[index];
+		public static Pointers.Pointer GetPointerByIndex(int index) {
+			if (index < pointers.Count && index > -1)
+				return pointers[index];
 
-            return null;
-        }
+			return null;
+		}
 
-        public void ManualUpdate() {
+		public void ManualUpdate() {
 			//Run each of the registered pointer managers.
 			pointerCount = 0;
 			for (int i = 0; i < pointerManagerUpdates.Count; i++) {
@@ -56,20 +56,20 @@ namespace Dugan.Input {
 				return;
 
 			for (int i = 0; i < pointers.Count; i++) {
-				bAnyPointerDown = bAnyPointerDown | (pointers[i].active && pointers[i].clickState == Dugan.Input.Pointers.Pointer.ClickState.Down);
-				bAnyPointerHeld = bAnyPointerHeld | (pointers[i].active && pointers[i].clickState == Dugan.Input.Pointers.Pointer.ClickState.Held);
-				bAnyPointerUp = bAnyPointerUp | (pointers[i].active && pointers[i].clickState == Dugan.Input.Pointers.Pointer.ClickState.Up);
+				bAnyPointerDown = bAnyPointerDown | (pointers[i].active && pointers[i].state == Dugan.Input.Pointers.Pointer.ClickState.Down);
+				bAnyPointerHeld = bAnyPointerHeld | (pointers[i].active && pointers[i].state == Dugan.Input.Pointers.Pointer.ClickState.Held);
+				bAnyPointerUp = bAnyPointerUp | (pointers[i].active && pointers[i].state == Dugan.Input.Pointers.Pointer.ClickState.Up);
 			}
-        }
+		}
 
-        public static int AddPointer(Pointers.Pointer pointer) {//Grants an ID to a pointer manager
+		public static int AddPointer(Pointers.Pointer pointer) {//Grants an ID to a pointer manager
 			if (pointers == null)
 				pointers = new List<Pointers.Pointer>();
 			
 			pointer.pointerID = pointers.Count;
 			pointers.Add(pointer);
-            return pointer.pointerID;
-        }
+			return pointer.pointerID;
+		}
 
 		public static void RemovePointer(Pointers.Pointer pointer) {
 			if (pointers == null)
@@ -81,12 +81,16 @@ namespace Dugan.Input {
 			}
 		}
 
-		public static void ReleaseAllPointers() {//Kills all active pointers.
+		public static void ReleaseAllPointers() {//Stops any pointers from firing up events on pointer targets. (enter/exit should still work?)
+			for (int i = 0; i < pointerCount; i++) {
+				if (pointers[i].state != Pointers.Pointer.ClickState.Idle || pointers[i].state != Pointers.Pointer.ClickState.Hover)
+					pointers[i].state = Pointers.Pointer.ClickState.Released;
+			}
 		}
 
 		public static Vector2 GetConvertedMouseCoordinates(Vector2 _dpiCoords, bool bLetterbox) {
 			return _dpiCoords * Dugan.Screen.GetScreenRatioPercentOfDefaultRatio(bLetterbox);
 
 		}
-    }
+	}
 }

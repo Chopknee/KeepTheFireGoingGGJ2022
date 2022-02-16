@@ -39,9 +39,6 @@ namespace Dugan.UI {
 		protected Dictionary<int, bool> interactiveStates = null;
 		protected bool bInteractive = true;
 
-		public Event OnClicked;
-		public string OnClickedArgs = "";
-
 		protected List<ButtonPart> buttonParts = null;
 
 		protected float heldColorMultiplier = 0.5f;
@@ -127,8 +124,6 @@ namespace Dugan.UI {
 				return;
 
 			base.OnPointerUpInternal();
-			if (base.GetPointerOver() && OnClicked != null && bInteractive)
-				OnClicked(this, OnClickedArgs);
 			
 			if (unSelectOnPointerUp)
 				bSelected = false;

@@ -6,18 +6,23 @@ namespace Dugan.Input {
 	public class PointerTarget : MonoBehaviour {
 
 		public delegate void Event(Dugan.Input.PointerTarget target, string args);
+		//When the pointer is in the down state while over the collider
 		public Event OnPointerDown = null;
 		public string OnPointerDownArgs = "";
 
+		//When the pointer is in the up state while over the collider
 		public Event OnPointerUp = null;
 		public string OnPointerUpArgs = "";
 
+		//When the pointer is being held down (over state does not matter)
 		public Event OnPointerHeld = null;
 		public string OnPointerHeldArgs = "";
 
+		//When the pointer enters the collider
 		public Event OnPointerEnter;
 		public string OnPointerEnterArgs = "";
 
+		//When the pointer exits the collider
 		public Event OnPointerExit;
 		public string OnPointerExitArgs = "";
 
@@ -42,13 +47,12 @@ namespace Dugan.Input {
 				for (int i = 0; i < myPointers.Count; i++) {
 					//Figure out if any of the pointers are interacting.
 					Dugan.Input.Pointers.Pointer _pointer = myPointers[i];
-					if (_pointer.clickState == Dugan.Input.Pointers.Pointer.ClickState.Down) {
+					if (_pointer.state == Dugan.Input.Pointers.Pointer.ClickState.Down) {
 						pointer = _pointer;
 						bGrabbedPointer = true;
 						break;
 					}
 				}
-
 			}
 
 			if (pointer == null) {
@@ -72,8 +76,11 @@ namespace Dugan.Input {
 				if (bGrabbedPointer) {
 					OnPointerDownInternal();
 				} else {
-					if (pointer.clickState == Dugan.Input.Pointers.Pointer.ClickState.Up) {
-						OnPointerUpInternal();
+					if (pointer.state == Dugan.Input.Pointers.Pointer.ClickState.Up) {
+						if (bLastPointerOver) {
+							OnPointerUpInternal();
+						}
+
 						pointer.pointerTarget = null;
 						pointer = null;
 					} else {
@@ -118,6 +125,15 @@ namespace Dugan.Input {
 		protected virtual void OnPointerUpInternal() {
 			if (OnPointerUp != null)
 				OnPointerUp(this, OnPointerUpArgs);
+		}
+
+		public void Release() {
+			if (pointer != null)
+				pointer.pointerTarget = null;
+
+			pointer = null;
+			bLastPointerOver = false;
+			bPointerDown = false;
 		}
 
 	}

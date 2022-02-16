@@ -66,7 +66,7 @@ namespace Dugan.Input {
             //Raycasting on the camera stack
             for (int pointerIndex = 0; pointerIndex < Dugan.Input.PointerManager.GetPointerCacheCount(); pointerIndex++) {
 
-                Dugan.Input.Pointers.Pointer pointer = Dugan.Input.PointerManager.GetPointer(pointerIndex);
+                Dugan.Input.Pointers.Pointer pointer = Dugan.Input.PointerManager.GetPointerByIndex(pointerIndex);
 
                 //Skip over dead or idle pointers
                 if (!pointer.active)

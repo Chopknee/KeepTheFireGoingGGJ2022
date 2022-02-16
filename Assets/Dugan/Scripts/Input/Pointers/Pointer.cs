@@ -5,13 +5,13 @@ namespace Dugan.Input.Pointers {
 		//Class which gives the ability to specify custom pointer sources.
 			//Example; a virtual cursor driven by Gamepad inputs
 		
-		public enum ClickState { Idle, Down, Held, Up, Hover }
+		public enum ClickState { Idle, Down, Held, Up, Hover, Released }
 
 		public Vector2 position { get; private set; }
 		public Vector2 lastPosition {get; private set; }
 		public int pointerID = -1;
 		
-		public ClickState clickState = ClickState.Idle;
+		public ClickState state = ClickState.Idle;
 		public PointerTarget pointerTarget = null;
 		public bool active = false;
 
@@ -23,7 +23,7 @@ namespace Dugan.Input.Pointers {
 		public void Reset() {
 			position = new Vector2();
 			lastPosition = new Vector2();
-			clickState = ClickState.Idle;
+			state = ClickState.Idle;
 			active = false;
 			pointerTarget = null;
 		}
