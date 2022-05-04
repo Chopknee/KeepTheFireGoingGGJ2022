@@ -7,6 +7,7 @@ namespace Dugan.Input {
 
         private static Raycaster instance = null;
         private List<Camera> cameras = null;
+		public int cameraCount = 0;
 
 		public bool bForceCameraRefresh = false;
 
@@ -23,7 +24,7 @@ namespace Dugan.Input {
 			bForceCameraRefresh = true;
         }
 
-		public List<Vector3> hits = new List<Vector3>();
+		// public List<Vector3> hits = new List<Vector3>();
 
         public void ManualUpdate() {
 			bool bCamerasNeedRefreshed = false;
@@ -55,13 +56,14 @@ namespace Dugan.Input {
 						}
 					}
 				}
+				cameraCount = cameras.Count;
 				// string cams = string.Empty;
 				// for (int i = 0; i < cameras.Count; i++) {
 				// 	cams += cameras[i].depth + ",";
 				// }
 				// Debug.Log(cams);
 			}
-			hits.Clear();
+			// hits.Clear();
 
             //Raycasting on the camera stack
             for (int pointerIndex = 0; pointerIndex < Dugan.Input.PointerManager.GetPointerCacheCount(); pointerIndex++) {
@@ -76,7 +78,7 @@ namespace Dugan.Input {
                     Camera cam = cameras[cameraIndex];
 
                     if (Physics.Raycast(cam.ScreenPointToRay(pointer.position), out RaycastHit hit, cam.farClipPlane, cam.cullingMask, queryTriggerInteraction)) {
-						hits.Add(hit.point);
+						// hits.Add(hit.point);
                         //The initial hit
 						//Debug.Log("Hit collider " + hit.collider.name);
 						if (pointer.pointerTarget == null) {//If the old pointer target is null, assign the current hit.

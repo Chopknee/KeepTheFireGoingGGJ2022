@@ -16,6 +16,7 @@ namespace KeepTheFire {
 		protected virtual void Awake() {
 			timeAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
 			timeAnimation.SetLengthInSeconds(0.25f);
+			timeAnimation.bUseUnscaledDeltaTime = true;
 		}
 
 		public virtual void PostAwake() {
@@ -23,7 +24,7 @@ namespace KeepTheFire {
 			OnResize();
 
 			buttons = GetComponentsInChildren<Dugan.UI.Button>();
-			SetButtonsInteractive(true);//Give the buttons an initial interactive state
+			SetButtonsInteractive(false);//Give the buttons an initial interactive state
 
 			timeAnimation.OnAnimationUpdate += OnAnimationUpdate;
 			timeAnimation.SetDirection(-1, true);
@@ -65,6 +66,9 @@ namespace KeepTheFire {
 			} else {
 				SetButtonsInteractive(true);
 			}
+
+			//Force sync transforms? Probably better to move this to the popups which set time scale
+			Physics.SyncTransforms();
 
 			OnAnimationComplete();
 		}

@@ -43,6 +43,7 @@ namespace KeepTheFire.Popups.Menu {
 		public override void PostAwake() {
 			base.PostAwake();
 			bOpened = true;
+			UnityEngine.Time.timeScale = 0.0f;
 		}
 
 		private void OnClickBtnResume(Dugan.Input.PointerTarget pointerTarget, string args) {
@@ -71,6 +72,7 @@ namespace KeepTheFire.Popups.Menu {
 
 		protected override void OnDisable() {
 			bOpened = false;
+			UnityEngine.Time.timeScale = 1.0f;
 		}
 	}
 }

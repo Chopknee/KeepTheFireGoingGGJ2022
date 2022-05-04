@@ -23,6 +23,8 @@ namespace Dugan {
 
 		private bool bPlaying = false;
 
+		public bool bUseUnscaledDeltaTime = false;
+
 		public void SetPaused(bool bValue) {
 			bPaused = bValue;
 		}
@@ -101,8 +103,9 @@ namespace Dugan {
 
 		public void ManualUpdate() {
 			if (!bPaused && !bComplete) {
+				float deltaTime = bUseUnscaledDeltaTime? Time.unscaledDeltaTime : Time.deltaTime;
 
-				alpha += direction * (Time.deltaTime / seconds);
+				alpha += direction * (deltaTime / seconds);
 
 				float sign = UnityEngine.Mathf.Sign(direction);
 

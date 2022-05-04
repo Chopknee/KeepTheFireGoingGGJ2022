@@ -37,7 +37,7 @@ namespace Dugan.UI {
 
 			if (bSelected) {
 				if (!bUpdatedHighlight) {
-					overTime += Time.deltaTime;
+					overTime += Time.unscaledDeltaTime;
 					if (overTime >= holdTimeBeforeHighlighting) {
 						bUpdatedHighlight = true;
 						UpdateHighlight();

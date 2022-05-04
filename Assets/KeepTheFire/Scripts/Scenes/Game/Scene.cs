@@ -136,9 +136,10 @@ namespace KeepTheFire.Scenes.Game {
 			
 			//Move player torch
 			Ray ray = camera.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.5f));
-			if (Physics.Raycast(ray, out RaycastHit hit, camera.farClipPlane, camera.cullingMask, QueryTriggerInteraction.Ignore)) {
-				playerTorch.transform.forward = hit.point - playerTorch.transform.position;
-			}
+			playerTorch.transform.forward = ray.direction;//hit.point - playerTorch.transform.position;
+			// if (Physics.Raycast(ray, out RaycastHit hit, camera.farClipPlane, camera.cullingMask, QueryTriggerInteraction.Ignore)) {
+				
+			// }
 
 			if (!bGameOver) {
 				//Check for game over

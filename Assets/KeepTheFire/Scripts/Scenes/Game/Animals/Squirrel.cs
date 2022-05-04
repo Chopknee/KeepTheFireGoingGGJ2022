@@ -18,8 +18,15 @@ namespace KeepTheFire.Scenes.Game {
 		private Dugan.UI.Button button = null;
 
 		private float approachSpeed = 0.5f;
+		
+		private new Dugan.Animation.QuickClips animation = null;
+		private Dugan.Animation.AnimationState animateState = null;
 
 		private void Awake() {
+
+			animation = transform.Find("Squirrel_Animation").GetComponent<Dugan.Animation.QuickClips>();
+			animateState = animation["Animate"];
+			animateState.wrapMode = WrapMode.Loop;
 
 			light = transform.Find("Light").gameObject;
 			light.SetActive(false);
@@ -54,6 +61,7 @@ namespace KeepTheFire.Scenes.Game {
 				//Approaching the fire, clickable at this point
 				transform.position += transform.forward * 0.5f * Time.deltaTime;
 				float distSquared = (transform.position - Scene.instance.firePit.transform.position).sqrMagnitude;
+				animateState.speed = 1.5f;
 				if (distSquared < (fireRadius * fireRadius)) {
 					state = 2;
 					transform.forward = -transform.forward;
@@ -69,6 +77,7 @@ namespace KeepTheFire.Scenes.Game {
 				//Grabbed a log, running away on fire or scarred away by player
 				transform.position += transform.forward * 2f * Time.deltaTime;
 				float distSquared = (transform.position - Scene.instance.firePit.transform.position).sqrMagnitude;
+				animateState.speed = 3.5f;
 				if (distSquared >= 12 * 12) {
 					DeActivate();
 				}
