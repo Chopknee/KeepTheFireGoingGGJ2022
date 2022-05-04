@@ -32,7 +32,7 @@ namespace KeepTheFire.Scenes.Game {
 
 		private Dugan.UI.Button btnUmbrella = null;
 
-		public Menu menu {get; internal set;}
+		public static bool bPaused { get { return Popups.Menu.Popup.bOpened; } }
 
 		private float rainMapY = 0.0f;
 
@@ -52,9 +52,9 @@ namespace KeepTheFire.Scenes.Game {
 			headsUpDisplay = Instantiate(hudPrefab).AddComponent<HeadsUpDisplay>();
 			headsUpDisplay.transform.position = new Vector3(0.0f, 0.0f, 1000.0f);
 
-			GameObject menuPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/Menu");
-			menu = Instantiate(menuPrefab).AddComponent<Menu>();
-			menu.transform.position = new Vector3(0.0f, 0.0f, 4000.0f);
+			// GameObject menuPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/Menu");
+			// menu = Instantiate(menuPrefab).AddComponent<Menu>();
+			// menu.transform.position = new Vector3(0.0f, 0.0f, 4000.0f);
 
 			Transform level = transform.Find("Level");
 
@@ -118,7 +118,7 @@ namespace KeepTheFire.Scenes.Game {
 		}
 
 		private void Update() {
-			if (menu.GetDirection() > 0)
+			if (Popups.Menu.Popup.bOpened)
 				return;
 
 			//Is raining or not.

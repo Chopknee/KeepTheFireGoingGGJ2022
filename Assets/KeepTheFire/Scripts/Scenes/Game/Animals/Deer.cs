@@ -33,7 +33,7 @@ namespace KeepTheFire.Scenes.Game
         // Update is called once per frame
         void Update()
         {
-			if (Scene.instance.menu.GetDirection() > 0)
+			if (Scene.bPaused)
 				return;
 
             if(state == 0) {

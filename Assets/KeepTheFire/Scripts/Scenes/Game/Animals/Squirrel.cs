@@ -39,7 +39,7 @@ namespace KeepTheFire.Scenes.Game {
 		float a = 0;
 
 		private void Update() {
-			if (Scene.instance.menu.GetDirection() > 0)
+			if (Scene.bPaused)
 				return;
 				
 			if (state == 0) {

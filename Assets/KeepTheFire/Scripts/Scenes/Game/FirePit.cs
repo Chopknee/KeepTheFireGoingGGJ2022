@@ -42,7 +42,7 @@ namespace KeepTheFire.Scenes.Game {
 			emissionModule.rateOverTime = Mathf.Lerp(0, 50, lastHealth);
 			light.intensity = Mathf.Lerp(0, 8, lastHealth);
 
-			if (Scene.instance.menu.GetDirection() > 0)
+			if (Scene.bPaused)
 				return;
 
 			if (burningLogs.Count > 0) {

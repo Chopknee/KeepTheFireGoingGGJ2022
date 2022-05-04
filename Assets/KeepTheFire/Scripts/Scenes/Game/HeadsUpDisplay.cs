@@ -29,7 +29,6 @@ namespace KeepTheFire.Scenes.Game {
 
 		private Dugan.TimeAnimation fadeAnimation = null;
 		private Dugan.TimeAnimation introAnimation = null;
-
 		private Dugan.TimeAnimation endAnimation = null;
 
 		private void Awake() {
@@ -40,6 +39,7 @@ namespace KeepTheFire.Scenes.Game {
 			imgVingette = canvas.Find("ImgVingette").GetComponent<UnityEngine.UI.RawImage>();
 
 			btnMenu = canvas.Find("BtnMenu").gameObject.AddComponent<Dugan.UI.Button>();
+			btnMenu.tintOnClick = true;
 			btnMenu.OnPointerUp += OnClickBtnMenu;
 
 			imgFade = canvas.Find("ImgFade").GetComponent<UnityEngine.UI.Image>();
@@ -117,10 +117,8 @@ namespace KeepTheFire.Scenes.Game {
 		}
 
 		private void OnClickBtnMenu(Dugan.Input.PointerTarget pointerTarget, string args) {
-			if (Scene.instance.menu.GetDirection() < 0)
-				Scene.instance.menu.SetDirection(1);
-			else
-				Scene.instance.menu.SetDirection(-1);
+			Popup p = Dugan.PopupManager.Load<Popups.Menu.Popup>();
+			p.PostAwake();
 		}
 
 		private void OnFadeAnimationUpdate(float a) {
