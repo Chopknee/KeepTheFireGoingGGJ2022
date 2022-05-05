@@ -12,10 +12,7 @@ namespace KeepTheFire.Scenes.Game {
 
 		private Dugan.UI.Button btnMenu = null;
 
-		private UnityEngine.UI.Image imgFade = null;
-		private Color imgFadeColor = Color.black;
-
-		private CanvasGroup introCG = null;
+		//private CanvasGroup introCG = null;
 		private CanvasGroup gameOverCG = null;
 
 		private TMPro.TextMeshProUGUI txtTime = null;
@@ -27,8 +24,7 @@ namespace KeepTheFire.Scenes.Game {
 		private string strAM = " AM";
 		private string strPM = " PM";
 
-		private Dugan.TimeAnimation fadeAnimation = null;
-		private Dugan.TimeAnimation introAnimation = null;
+		//private Dugan.TimeAnimation introAnimation = null;
 		private Dugan.TimeAnimation endAnimation = null;
 
 		private void Awake() {
@@ -42,27 +38,17 @@ namespace KeepTheFire.Scenes.Game {
 			btnMenu.tintOnClick = true;
 			btnMenu.OnPointerUp += OnClickBtnMenu;
 
-			imgFade = canvas.Find("ImgFade").GetComponent<UnityEngine.UI.Image>();
-			imgFadeColor = imgFade.color;
-			imgFadeColor.a = 0;
-			imgFade.color = imgFadeColor;
-
-			introCG = canvas.Find("Intro").GetComponent<CanvasGroup>();
+			//introCG = canvas.Find("Intro").GetComponent<CanvasGroup>();
 			gameOverCG = canvas.Find("GameOver").GetComponent<CanvasGroup>();
 
 			txtTime = canvas.Find("Watch/TxtTime").GetComponent<TMPro.TextMeshProUGUI>();
 
-			// fadeAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
-			// fadeAnimation.SetLengthInSeconds(1.0f);
-			// fadeAnimation.OnAnimationUpdate += OnFadeAnimationUpdate;
-			// fadeAnimation.SetDirection(1, true);
-			// fadeAnimation.SetDirection(-1);
-
-			introAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
-			introAnimation.SetLengthInSeconds(5.0f);
-			introAnimation.OnAnimationUpdate += OnIntroAnimationUpdate;
-			introAnimation.SetDirection(1, true);
-			introAnimation.SetDirection(-1);
+			//This plays the initial intro animation
+			// introAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
+			// introAnimation.SetLengthInSeconds(5.0f);
+			// introAnimation.OnAnimationUpdate += OnIntroAnimationUpdate;
+			// introAnimation.SetDirection(1, true);
+			// introAnimation.SetDirection(-1);
 
 			endAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
 			endAnimation.SetLengthInSeconds(5.0f);
@@ -121,16 +107,11 @@ namespace KeepTheFire.Scenes.Game {
 			p.PostAwake();
 		}
 
-		private void OnFadeAnimationUpdate(float a) {
-			imgFadeColor.a = a;
-			imgFade.color = imgFadeColor;
-		}
-
-		private void OnIntroAnimationUpdate(float a) {
-			a = Dugan.TimeAnimation.GetNormalizedTimeInTimeSlice(a, 0.0f, 0.25f);
-			a = Dugan.Mathf.Easing.EaseInOutCubic(a);
-			introCG.alpha = a;
-		}
+		// private void OnIntroAnimationUpdate(float a) {
+		// 	a = Dugan.TimeAnimation.GetNormalizedTimeInTimeSlice(a, 0.0f, 0.25f);
+		// 	a = Dugan.Mathf.Easing.EaseInOutCubic(a);
+		// 	introCG.alpha = a;
+		// }
 
 		public void GameOver(bool won) {
 			gameOverCG.transform.Find("YouDied").gameObject.SetActive(!won);

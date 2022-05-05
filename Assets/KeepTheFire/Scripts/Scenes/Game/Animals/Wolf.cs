@@ -13,11 +13,14 @@ namespace KeepTheFire.Scenes.Game {
 
 		private Dugan.UI.Button button = null;
 
-		private float approachSpeed = 2f;
-		private float awaySpeed = 4.0f;
+		private float approachSpeed = 2.5f;
+		private float awaySpeed = 6.0f;
 
 		private new Dugan.Animation.QuickClips animation = null;
 		private Dugan.Animation.AnimationState animateState = null;
+
+		private float respawnCheckTime = 0.0f;
+		private float respawnRestTime = 1.0f;
 
 		void Awake() {
 			animation = transform.Find("Wolf_Animation").GetComponent<Dugan.Animation.QuickClips>();
@@ -35,16 +38,28 @@ namespace KeepTheFire.Scenes.Game {
 			if (Scene.bPaused)
 				return;
 			if (state == 0) {
-				if (Scene.instance.logs.count > 0 && Random.Range(0.0f, 1.0f) < 0.01f) {
-					Activate();
+				//Idle not spawned, checking for chance to spawn
+				respawnCheckTime += Time.deltaTime;
+				if (respawnCheckTime > respawnRestTime) {
+					respawnCheckTime = 0.0f;
+					respawnRestTime = Random.Range(0.5f, 2.0f);
+					if (Scene.instance.logs.count > 0) {
+						float num = Random.Range(0, 10);
+						if (num == 0)
+							Activate();
+					}
 				}
 			}
 
 			if (state == 1) {
 				transform.position += transform.forward * approachSpeed * Time.deltaTime;
 				float distSquared = (transform.position - Scene.instance.logs.transform.position).sqrMagnitude;
-				animateState.speed = 1.5f;
-				if (distSquared < (logPileRadius * logPileRadius)) {
+				animateState.speed = approachSpeed * 1.3334f;
+
+				if (Scene.instance.logs.count == 0) {//Make wolf run away if no logs are available to steal
+					state = 2;
+					transform.forward = -transform.forward;
+				} else if (distSquared < (logPileRadius * logPileRadius)) {
 					state = 2;
 					transform.forward = -transform.forward;
 					// Remove Log from pile
@@ -56,7 +71,7 @@ namespace KeepTheFire.Scenes.Game {
 			if (state == 2) {
 				transform.position += transform.forward * awaySpeed * Time.deltaTime;
 				float distSquared = (transform.position - Scene.instance.logs.transform.position).sqrMagnitude;
-				animateState.speed = 3.0f;
+				animateState.speed = awaySpeed * 1.3334f;
 				if (distSquared >= 12 * 12) {
 					Deactivate();
 				}
@@ -87,7 +102,6 @@ namespace KeepTheFire.Scenes.Game {
 				state = 2;
 				transform.forward = -transform.forward;
 			}
-
 		}
 	}
 }

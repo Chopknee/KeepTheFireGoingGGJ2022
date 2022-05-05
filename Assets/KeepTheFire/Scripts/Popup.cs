@@ -15,7 +15,7 @@ namespace KeepTheFire {
 
 		protected virtual void Awake() {
 			timeAnimation = gameObject.AddComponent<Dugan.TimeAnimation>();
-			timeAnimation.SetLengthInSeconds(0.25f);
+			timeAnimation.SetLengthInSeconds(0.5f);
 			timeAnimation.bUseUnscaledDeltaTime = true;
 		}
 

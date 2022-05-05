@@ -17,10 +17,16 @@ namespace KeepTheFire.Scenes.Game {
 
 		private Dugan.UI.Button button = null;
 
+		private float targetApproachSpeed = 0.5f;
 		private float approachSpeed = 0.5f;
 		
 		private new Dugan.Animation.QuickClips animation = null;
 		private Dugan.Animation.AnimationState animateState = null;
+
+		private float respawnCheckTime = 0.0f;
+		private float respawnRestTime = 1.0f;
+
+		private float speedChangeT = 0.0f;
 
 		private void Awake() {
 
@@ -41,9 +47,9 @@ namespace KeepTheFire.Scenes.Game {
 
 			source = GetComponent<AudioSource>();
 
-		}
+			respawnRestTime = Random.Range(0.5f, 2.0f);
 
-		float a = 0;
+		}
 
 		private void Update() {
 			if (Scene.bPaused)
@@ -51,17 +57,34 @@ namespace KeepTheFire.Scenes.Game {
 				
 			if (state == 0) {
 				//Idle not spawned, checking for chance to spawn
-				if (Random.Range(0.0f, 1.0f) < 0.001f) {
-					//Spawn 
-					Activate();
+				respawnCheckTime += Time.deltaTime;
+				if (respawnCheckTime > respawnRestTime) {
+					respawnCheckTime = 0.0f;
+					respawnRestTime = Random.Range(0.5f, 2.0f);
+					float num = Random.Range(0, 25);
+					if (num == 0)
+						Activate();
 				}
 			}
 
 			if (state == 1) {
 				//Approaching the fire, clickable at this point
-				transform.position += transform.forward * 0.5f * Time.deltaTime;
+				speedChangeT += Time.deltaTime;
+
+				if (speedChangeT > 0.5f) {
+					targetApproachSpeed = Random.Range(0.0f, 3.5f);
+
+					if (targetApproachSpeed < 0.5)
+						targetApproachSpeed = 0.0f;
+						
+					speedChangeT = 0.0f;
+				}
+					
+				approachSpeed = Mathf.Lerp(approachSpeed, targetApproachSpeed, Time.deltaTime);
+				
+				transform.position += transform.forward * approachSpeed * Time.deltaTime;
 				float distSquared = (transform.position - Scene.instance.firePit.transform.position).sqrMagnitude;
-				animateState.speed = 1.5f;
+				animateState.speed = approachSpeed * 3f;
 				if (distSquared < (fireRadius * fireRadius)) {
 					state = 2;
 					transform.forward = -transform.forward;
@@ -75,9 +98,9 @@ namespace KeepTheFire.Scenes.Game {
 
 			if (state == 2) {
 				//Grabbed a log, running away on fire or scarred away by player
-				transform.position += transform.forward * 2f * Time.deltaTime;
+				transform.position += transform.forward * 6f * Time.deltaTime;
 				float distSquared = (transform.position - Scene.instance.firePit.transform.position).sqrMagnitude;
-				animateState.speed = 3.5f;
+				animateState.speed = 6.0f * 3.0f;
 				if (distSquared >= 12 * 12) {
 					DeActivate();
 				}

@@ -13,6 +13,7 @@ namespace KeepTheFire.Popups.Menu {
 
 		private Dugan.UI.Button btnResume = null;
 		private Dugan.UI.Button btnCredits = null;
+		private Dugan.UI.Button btnQuitToMenu = null;
 		private Dugan.UI.Button btnQuit = null;
 
 		public static bool bOpened { get; internal set; }
@@ -32,6 +33,10 @@ namespace KeepTheFire.Popups.Menu {
 			btnCredits = root.Find("BtnCredits").gameObject.AddComponent<Dugan.UI.Button>();
 			btnCredits.tintOnClick = true;
 			btnCredits.OnPointerUp += OnClickBtnCredits;
+
+			btnQuitToMenu = root.Find("BtnQuitToMenu").gameObject.AddComponent<Dugan.UI.Button>();
+			btnQuitToMenu.tintOnClick = true;
+			btnQuitToMenu.OnPointerUp += OnClickBtnQuitToMenu;
 
 			btnQuit = root.Find("BtnQuit").gameObject.AddComponent<Dugan.UI.Button>();
 			btnQuit.tintOnClick = true;
@@ -55,12 +60,27 @@ namespace KeepTheFire.Popups.Menu {
 			p.PostAwake();
 		}
 
+		private void OnClickBtnQuitToMenu(Dugan.Input.PointerTarget pointerTarget, string args) {
+			Transition.instance.OnOpened += OnTransitionOpened;
+			Transition.instance.SetDirection(1);
+		}
+
+		private void OnTransitionOpened() {
+			Transition.instance.OnOpened -= OnTransitionOpened;
+			UnityEngine.SceneManagement.SceneManager.LoadScene("KeepTheFire.Scenes.MainMenu");
+		}
+
 		private void OnClickBtnQuit(Dugan.Input.PointerTarget pointerTarget, string args) {
 			Application.Quit();
 		}
 
 		protected override void OnAnimationUpdate(float a) {
-			a = Dugan.Mathf.Easing.EaseInOutCirc(a);
+			if (timeAnimation.GetDirection() > 0)
+				a = Dugan.Mathf.Easing.EaseOutBack(a);
+
+			if (timeAnimation.GetDirection() < 0)
+				a = Dugan.Mathf.Easing.EaseInCubic(a);
+				
 			root.localScale = Vector3.one * a;
 			imgBackground.color = new Color(0.0f, 0.0f, 0.0f, a) * 0.5f;
 		}
@@ -71,6 +91,7 @@ namespace KeepTheFire.Popups.Menu {
 		}
 
 		protected override void OnDisable() {
+			base.OnDisable();
 			bOpened = false;
 			UnityEngine.Time.timeScale = 1.0f;
 		}

@@ -42,6 +42,8 @@ namespace KeepTheFire.Scenes.Game {
 
 		private bool bGameOver = false;
 
+		public bool bIgnoreGameover = false;
+
 		private void Awake() {
 			instance = this;
 
@@ -51,10 +53,6 @@ namespace KeepTheFire.Scenes.Game {
 			GameObject hudPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/HeadsUpDisplay");
 			headsUpDisplay = Instantiate(hudPrefab).AddComponent<HeadsUpDisplay>();
 			headsUpDisplay.transform.position = new Vector3(0.0f, 0.0f, 1000.0f);
-
-			// GameObject menuPrefab = Resources.Load<GameObject>("KeepTheFire/Scenes/Game/Menu");
-			// menu = Instantiate(menuPrefab).AddComponent<Menu>();
-			// menu.transform.position = new Vector3(0.0f, 0.0f, 4000.0f);
 
 			Transform level = transform.Find("Level");
 
@@ -115,7 +113,19 @@ namespace KeepTheFire.Scenes.Game {
 			for (int i = 0; i < 4; i++) {
 				firePit.AddLog();
 			}
+
+			Ray ray = camera.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.5f));
+			lastPlayerTorchDirection = ray.direction;
+
+			Transition.instance.OnClosed += OnTransitionClosed;
+			Transition.instance.SetDirection(-1);
 		}
+
+		private void OnTransitionClosed() {
+			Transition.instance.OnClosed -= OnTransitionClosed;
+		}
+
+		private Vector3 lastPlayerTorchDirection = Vector3.zero;
 
 		private void Update() {
 			if (Popups.Menu.Popup.bOpened)
@@ -136,12 +146,11 @@ namespace KeepTheFire.Scenes.Game {
 			
 			//Move player torch
 			Ray ray = camera.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.5f));
-			playerTorch.transform.forward = ray.direction;//hit.point - playerTorch.transform.position;
-			// if (Physics.Raycast(ray, out RaycastHit hit, camera.farClipPlane, camera.cullingMask, QueryTriggerInteraction.Ignore)) {
-				
-			// }
+			lastPlayerTorchDirection = Vector3.Lerp(lastPlayerTorchDirection, ray.direction, Time.deltaTime * 10.0f);
 
-			if (!bGameOver) {
+			playerTorch.transform.forward = lastPlayerTorchDirection;
+
+			if (!bGameOver && !bIgnoreGameover) {
 				//Check for game over
 				if (firePit.health <= 0.0f) {
 					bGameOver = true;
